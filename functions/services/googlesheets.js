@@ -17,6 +17,8 @@ async function findBirthday() {
     const rows = res.data.values;
     const birthdays = [];
 
+    console.log('🔍 Verificando aniversários...');
+
     rows.forEach(row => {
         const [company, name, date, phone, status] = row;
         const info = date.split('/');
@@ -30,6 +32,7 @@ async function findBirthday() {
         }
     });
 
+    console.log(`🎉 Encontrados ${birthdays.length} aniversários para hoje.`);
     return birthdays;
 
 }

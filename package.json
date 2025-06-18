@@ -1,9 +1,18 @@
 {
+  "main": "main.js",
+  "scripts": {
+    "start": "concurrently \"npm run dev --prefix frontend\" \"wait-on http://localhost:5173 && electron .\""
+  },
   "dependencies": {
     "dotenv": "^16.5.0",
     "googleapis": "^150.0.1",
     "moment-timezone": "^0.5.45",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": ""
+    "whatsapp-web.js": "^1.21.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "electron": "^36.5.0",
+    "wait-on": "^8.0.3"
   }
 }
