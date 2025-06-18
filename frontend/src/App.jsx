@@ -3,6 +3,7 @@ import { useState } from "react"
 import BirthdayPage from "../pages/Birthday"
 import WhatsappPage from "../pages/Whatsapp"
 import DocumentsPage from "../pages/Documents"
+import Terminal from "../components/Terminal"
 
 function App() {
   const [activeTab, setActiveTab] = useState("whatsapp");
@@ -23,8 +24,13 @@ function App() {
   return (
     <>
       <Header activeTab={activeTab} setActiveTab={setActiveTab}/>
-      <p style={{textAlign:"center", padding:'10px'}}>Bem-Vindo ao OnTrigger!</p>
-      <div style={{ padding: "20px" }}>{renderContent()}</div>
+      <p>Bem-Vindo ao OnTrigger!</p>
+      <main>
+        <aside className="page">{renderContent()}</aside>
+        <section>
+          <Terminal/>
+        </section>
+      </main>
     </>
   )
 }

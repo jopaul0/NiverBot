@@ -5,6 +5,8 @@
     padding: 15px 20px;
     background-color: #204A53;
     color: #f1f0ec;
+    z-index: 1000;
+    box-shadow: #0000009a 0px 2px 4px;
 }
 .logo-content{
     display: flex;
