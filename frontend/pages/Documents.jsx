@@ -1,9 +1,14 @@
+import Button from "../components/Button";
 const DocumentsPage = () => {
   return (
-    <div>
-      <h1>Documents</h1>
-      <p>This is the Documents page.</p>
-    </div>
+    <>
+      <article>
+        <h1>Documentos</h1>
+        <p>Busque os documentos pendentes!</p>
+      </article>
+      <Button message={"Documentos Pendentes"} />
+      <Button message={"Enviar Mensagem"} />
+    </>
   );
 }
 export default DocumentsPage;

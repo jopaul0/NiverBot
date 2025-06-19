@@ -27,7 +27,7 @@ const sendHappyBirthday = (people) => {
     client.initialize();
 
     async function sendCustomMessage() {
-        const media = MessageMedia.fromFilePath('./public/images/mensagemaniversario.jpeg');
+        const media = MessageMedia.fromFilePath('./frontend/assets/mensagemaniversario.jpeg');
 
         for (const person of people) {
             const number = person.phone.includes('@c.us') ? person.phone : `${person.phone}@c.us`;

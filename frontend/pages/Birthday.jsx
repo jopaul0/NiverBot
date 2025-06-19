@@ -1,9 +1,15 @@
+import Button from "../components/Button";
 const BirthdayPage = () => {
   return (
-    <div>
-      <h1>Happy Birthday!</h1>
-      <p>Wishing you a day filled with love, joy, and all your favorite things!</p>
-    </div>
+    <>
+      <article>
+        <h1>Aniversários</h1>
+        <p>Busque os aniversariantes do dia!</p>
+      </article>
+      <Button message={"Aniversários Hoje"} />
+      <Button message={"Aniversários Próximos"} />
+      <Button message={"Enviar Mensagem"} />
+    </>
   );
 }
 export default BirthdayPage;

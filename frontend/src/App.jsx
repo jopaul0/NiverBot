@@ -1,12 +1,15 @@
 import Header from "../components/Header"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import BirthdayPage from "../pages/Birthday"
 import WhatsappPage from "../pages/Whatsapp"
 import DocumentsPage from "../pages/Documents"
 import Terminal from "../components/Terminal"
+import { CSSTransition, SwitchTransition } from "react-transition-group"
+import "./App.css"
 
 function App() {
   const [activeTab, setActiveTab] = useState("whatsapp");
+  const nodeRef = useRef(null);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -23,12 +26,26 @@ function App() {
 
   return (
     <>
-      <Header activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
       <p>Bem-Vindo ao OnTrigger!</p>
       <main>
-        <aside className="page">{renderContent()}</aside>
+        <aside>
+          <SwitchTransition>
+            <CSSTransition
+              key={activeTab}
+              timeout={300}
+              classNames="fade"
+              nodeRef={nodeRef}
+              unmountOnExit
+            >
+              <div ref={nodeRef} className="tab-page">
+                {renderContent()}
+              </div>
+            </CSSTransition>
+          </SwitchTransition>
+        </aside>
         <section>
-          <Terminal/>
+          <Terminal />
         </section>
       </main>
     </>
