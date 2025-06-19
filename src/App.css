@@ -15,7 +15,7 @@ html {
 }
 
 main {
-    min-height: 80vh;
+    height: 80vh;
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 3fr 1fr;
@@ -45,6 +45,12 @@ aside {
     padding: 0 20px;
     border-radius: 10px;
     transition: all 0.3s ease;
+}
+
+aside,
+section {
+    height: 100%;
+    overflow: hidden;
 }
 
 .fade-enter {

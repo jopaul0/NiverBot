@@ -1,50 +1,54 @@
-const fs = require('fs');
-const qrcode = require('qrcode-terminal');
-const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+import pkg from 'whatsapp-web.js';
+import { sendLog } from '../utils/sendLog.js';
+const { Client, LocalAuth } = pkg;
+import qrcode from 'qrcode-terminal';
 
-const sendHappyBirthday = (people) => {
-    const client = new Client({
+let client = null;
+
+export function connectWhatsapp(mainWindow) {
+    if (client && client.info) {
+        sendLog(mainWindow, 'Já está conectado');
+        return;
+    }
+
+    client = new Client({
         authStrategy: new LocalAuth(),
-        puppeteer: { headless: true }
     });
 
-    console.log('🔗 Conectando ao WhatsApp...');
+    client.on('ready', () => {
+        mainWindow.webContents.send('whatsapp-status', true);
+        sendLog(mainWindow, 'WhatsApp pronto e conectado!');
+    });
+
+    client.on('disconnected', () => {
+        mainWindow.webContents.send('whatsapp-status', false);
+        sendLog(mainWindow, 'WhatsApp desconectado');
+        client = null;
+    });
 
     client.on('qr', (qr) => {
-        qrcode.generate(qr, { small: true });
-    });
+        mainWindow.webContents.send('whatsapp-qr', qr);
+        sendLog(mainWindow, 'QR Code recebido, escaneie com seu celular');
 
-    client.on('ready', async () => {
-        console.log('✅ Bot conectado ao WhatsApp');
-        await sendCustomMessage();
-        await delay(5000);
-        await client.destroy();    
-        console.log('🚪 Bot finalizado com sucesso.');
-        process.exit(0);    
+        qrcode.generate(qr, { small: true }, (qrAscii) => {
+            // Envia o QR Code ASCII para o frontend
+            sendLog(mainWindow, qrAscii);
+        });
     });
 
     client.initialize();
 
-    async function sendCustomMessage() {
-        const media = MessageMedia.fromFilePath('./frontend/assets/mensagemaniversario.jpeg');
+    sendLog(mainWindow, 'Conectando...');
+}
 
-        for (const person of people) {
-            const number = person.phone.includes('@c.us') ? person.phone : `${person.phone}@c.us`;
-
-            const firstName = person.name.split(" ")[0].toLowerCase();
-            const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-            const message = `🎉 Olá ${formattedName}, a equipe da Onvale deseja um feliz aniversário cheio de realizações! 🎂`;
-
-            try {
-                await client.sendMessage(number, media);
-                await client.sendMessage(number, message);
-                console.log(`✅ Mensagem enviada para ${person.name}`);
-            } catch (erro) {
-                console.error(`❌ Erro ao enviar para ${person.name}:`, erro);
-            }
-        }
+export async function disconnectWhatsapp(mainWindow) {
+    if (!client) {
+        sendLog(mainWindow, 'Não está conectado');
+        return;
     }
-};
 
-module.exports = { sendHappyBirthday };
+    await client.destroy();
+    client = null;
+    mainWindow.webContents.send('whatsapp-status', false);
+    sendLog(mainWindow, 'Desconectado');
+}

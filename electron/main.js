@@ -1,15 +1,19 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
+import { connectWhatsapp, disconnectWhatsapp } from "../src/functions/services/whatsapp.js";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+let mainWindow = null;
+
 function createWindow() {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1000,
         height: 800,
         resizable: false,
-        icon: path.join(__dirname, '..', 'src', 'assets', 'logo.png'),
+        icon: path.join(__dirname, '..', 'assets', 'logo.png'),
         title: 'OnTrigger',
         titleBarOverlay: {
             color: '#204A53',
@@ -18,17 +22,32 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js') // Opcional
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
     const startUrl = process.env.ELECTRON_START_URL || 'http://localhost:5173';
-    win.loadURL(startUrl);
-    win.setMenu(null);
+    mainWindow.loadURL(startUrl);
+    mainWindow.setMenu(null);
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+    createWindow();
 
+    ipcMain.handle('whatsapp-connect', async () => {
+        await connectWhatsapp(mainWindow);
+    });
+
+    ipcMain.handle('whatsapp-disconnect', async () => {
+        await disconnectWhatsapp(mainWindow);
+    });
+
+    ipcMain.on('send-log', (event, message) => {
+        if (mainWindow && mainWindow.webContents) {
+            mainWindow.webContents.send('log-message', message);
+        }
+    });
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -41,3 +60,4 @@ app.on('activate', () => {
         createWindow();
     }
 });
+

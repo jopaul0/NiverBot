@@ -1,7 +1,9 @@
 import './Button.css';
-const Button = ({message, disable}) => {
+
+const Button = ({ message, disable, onClick }) => {
+
   return (
-    <button className="button" disabled={disable} onClick={() => alert(message)}>
+    <button className="button" disabled={disable} onClick={onClick}>
       {message}
     </button>
   );

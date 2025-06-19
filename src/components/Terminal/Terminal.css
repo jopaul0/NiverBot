@@ -6,6 +6,8 @@
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     height: 100%;
+    max-height: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     margin: 0 20px;
@@ -20,11 +22,37 @@
 
 .terminal-body {
     flex: 1;
-    padding: 12px;
     overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    max-height: 100%;
+    padding: 12px;
+    font-family: monospace;
+    scrollbar-width: thin;
+    scrollbar-color: #F9F4AD #f9f4ad25;
+}
+
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+    background: #204A53;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+    background-color: #F9F4AD;
+    border-radius: 10px;
+    border: 2px solid #204A53;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #fff7b2;
 }
 
 .log-line {
-    margin: 0;
-    white-space: pre-wrap;
+    white-space: pre;
+    font-family: monospace;
+    line-height: 1.1;
+    font-size: 12px;
 }

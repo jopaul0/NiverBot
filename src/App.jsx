@@ -1,5 +1,5 @@
 import Header from "./components/Header"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import BirthdayPage from "./pages/Birthday"
 import WhatsappPage from "./pages/Whatsapp"
 import DocumentsPage from "./pages/Documents"
@@ -9,9 +9,9 @@ import "./App.css"
 import Status from "./components/Status"
 
 function App() {
-  const [activeTab, setActiveTab] = useState("whatsapp");
-  const [whatsappConnected, setWhatsappConnected] = useState(false);
   const nodeRef = useRef(null);
+
+  const [activeTab, setActiveTab] = useState("whatsapp");
 
   const renderContent = () => {
     switch (activeTab) {
@@ -28,6 +28,35 @@ function App() {
         return <WhatsappPage />;
     }
   };
+
+  const [whatsappConnected, setWhatsappConnected] = useState(false);
+  useEffect(() => {
+    const handleStatus = (status) => {
+      setWhatsappConnected(status);
+    };
+
+    window.electronAPI.removeAllListeners('whatsapp-status');
+    window.electronAPI.onWhatsappStatus(handleStatus);
+
+    return () => {
+      window.electronAPI.removeAllListeners('whatsapp-status');
+    };
+  }, []);
+
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    const handleLog = (msg) => {
+      setLogs(prev => [...prev, msg]);
+    };
+
+    window.electronAPI.removeAllListeners('log-message'); // Só funciona se essa função existir no preload!
+    window.electronAPI.onLogMessage(handleLog);
+
+    return () => {
+      window.electronAPI.removeAllListeners('log-message');
+    };
+  }, []);
 
   return (
     <>
@@ -50,10 +79,11 @@ function App() {
           </SwitchTransition>
         </aside>
         <section>
-          <Terminal />
+          <Terminal logs={logs} />
         </section>
         <Status active={whatsappConnected} />
       </main>
+
     </>
   )
 }
