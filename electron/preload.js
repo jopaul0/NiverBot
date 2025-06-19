@@ -9,4 +9,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onLogMessage: (callback) => ipcRenderer.on('log-message', (event, message) => callback(message)),
   onWhatsappStatus: (callback) => ipcRenderer.on('whatsapp-status', (event, status) => callback(status)),
   onWhatsappQR: (callback) => ipcRenderer.on('whatsapp-qr', (event, qr) => callback(qr)),
+  clearWhatsappSession: () => ipcRenderer.invoke('whatsapp-clear-session')
 });

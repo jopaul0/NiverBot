@@ -2,6 +2,8 @@ import pkg from 'whatsapp-web.js';
 import { sendLog } from '../utils/sendLog.js';
 const { Client, LocalAuth } = pkg;
 import qrcode from 'qrcode-terminal';
+import fs from 'fs';
+import path from 'path';
 
 let client = null;
 
@@ -51,4 +53,19 @@ export async function disconnectWhatsapp(mainWindow) {
     client = null;
     mainWindow.webContents.send('whatsapp-status', false);
     sendLog(mainWindow, 'Desconectado');
+}
+
+export function clearWhatsappSession(mainWindow) {
+    const sessionPath = path.join(process.cwd(), '.wwebjs_auth');
+
+    try {
+        if (fs.existsSync(sessionPath)) {
+            fs.rmSync(sessionPath, { recursive: true, force: true });
+            sendLog(mainWindow, 'Sessão do WhatsApp limpa com sucesso.');
+        } else {
+            sendLog(mainWindow, 'Nenhuma sessão do WhatsApp encontrada.');
+        }
+    } catch (error) {
+        sendLog(mainWindow, `Erro ao limpar sessão: ${error.message}`);
+    }
 }

@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectWhatsapp, disconnectWhatsapp } from "../src/functions/services/whatsapp.js";
+import { clearWhatsappSession } from '../src/functions/services/whatsapp.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,6 +41,10 @@ app.whenReady().then(() => {
 
     ipcMain.handle('whatsapp-disconnect', async () => {
         await disconnectWhatsapp(mainWindow);
+    });
+
+    ipcMain.handle('whatsapp-clear-session', () => {
+        clearWhatsappSession(mainWindow);
     });
 
     ipcMain.on('send-log', (event, message) => {

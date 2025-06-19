@@ -27,6 +27,17 @@ const WhatsappPage = ({ connected, setConnected }) => {
     }
     setLoading(false);
   };
+
+  const handleClearSession = async () => {
+    setLoading(true);
+  try {
+    await window.electronAPI.clearWhatsappSession();
+  } catch (error) {
+    window.electronAPI.sendLog(`Erro ao limpar sessão: ${error.message || error}`);
+  }
+  setLoading(false);
+  }
+
   return (
     <>
       <article>
@@ -35,6 +46,7 @@ const WhatsappPage = ({ connected, setConnected }) => {
       </article>
       <Button message={"Conectar ao WhatsApp"} disable={connected} onClick={handleConnect} />
       <Button message={"Desconectar"} disable={!connected} onClick={handleDisconnect} />
+      <Button message={"Limpar sessão"} disable={connected} onClick={handleClearSession} />
     </>
   );
 }
