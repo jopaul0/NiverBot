@@ -1,16 +1,19 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+import { app, BrowserWindow } from "electron";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function createWindow() {
     const win = new BrowserWindow({
         width: 1000,
         height: 800,
         resizable: false,
-        icon: path.join(__dirname, 'frontend', 'assets', 'logo.png'),
+        icon: path.join(__dirname, '..', 'src', 'assets', 'logo.png'),
         title: 'OnTrigger',
         titleBarOverlay: {
-            color: '#204A53',        
-            symbolColor: '#DDD9CE' 
+            color: '#204A53',
+            symbolColor: '#DDD9CE'
         },
         webPreferences: {
             nodeIntegration: false,
