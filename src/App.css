@@ -15,6 +15,7 @@ html {
 }
 
 main {
+    margin-top: 20px;
     height: 80vh;
     display: grid;
     grid-template-columns: 1fr 2fr;

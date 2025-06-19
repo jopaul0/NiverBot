@@ -1,0 +1,22 @@
+.title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 0 10px;
+    background-color: #1a3941;
+    -webkit-app-region: drag;
+}
+
+.title-bar button {
+    background: none;
+    border: none;
+    color: #F9F4AD;
+    cursor: pointer;
+    padding: 5px 10px;
+    -webkit-app-region: no-drag;
+    transition: all 0.3s ease;
+}
+
+.title-bar button:hover {
+    color: #cfc98d;
+}

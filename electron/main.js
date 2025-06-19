@@ -14,6 +14,7 @@ function createWindow() {
         width: 1000,
         height: 800,
         resizable: false,
+        frame: false,
         icon: path.join(__dirname, '..', 'assets', 'logo.png'),
         title: 'OnTrigger',
         titleBarOverlay: {
@@ -35,6 +36,16 @@ function createWindow() {
 app.whenReady().then(() => {
     createWindow();
 
+    // Handle window controls
+    ipcMain.on('window-minimize', () => {
+        mainWindow.minimize();
+    });
+
+    ipcMain.on('window-close', () => {
+        mainWindow.close();
+    });
+
+    // Handle WhatsApp connection
     ipcMain.handle('whatsapp-connect', async () => {
         await connectWhatsapp(mainWindow);
     });

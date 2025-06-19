@@ -61,7 +61,6 @@ function App() {
   return (
     <>
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      <p>Bem-Vindo ao OnTrigger!</p>
       <main>
         <aside>
           <SwitchTransition>
@@ -83,7 +82,6 @@ function App() {
         </section>
         <Status active={whatsappConnected} />
       </main>
-
     </>
   )
 }

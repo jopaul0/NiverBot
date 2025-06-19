@@ -14,6 +14,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "googleapis": "^150.0.1",
+    "lucide-react": "^0.518.0",
     "moment-timezone": "^0.5.45",
     "qrcode-terminal": "^0.12.0",
     "react": "^19.1.0",
