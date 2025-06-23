@@ -1,8 +1,9 @@
 import { google } from 'googleapis';
-import { BirthdayInMonth } from '../utils/date.js';
+import { BirthdayInMonth, isBirthday } from '../utils/date.js';
 import { sendLog } from '../utils/sendLog.js';
+import { uniqueArray, firstName } from '../utils/format.js';
 
-export async function findBirthdays(mainWindow) {
+async function getRows() {
     const auth = new google.auth.GoogleAuth({
         keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
         scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -16,6 +17,11 @@ export async function findBirthdays(mainWindow) {
     });
 
     const rows = res.data.values;
+    return rows || [];
+}
+
+export async function findBirthdays(mainWindow) {
+    const rows = await getRows();
     const birthdays = [];
 
     sendLog(mainWindow, '🔍 Verificando aniversários...');
@@ -33,16 +39,32 @@ export async function findBirthdays(mainWindow) {
         }
     });
 
-    const unique = birthdays.filter((value, index, self) =>
-        index === self.findIndex(b =>
-            b.name === value.name && b.birthday.getTime() === value.birthday.getTime()
-        )
-    );
+    const unique = uniqueArray(birthdays);
 
     sendLog(mainWindow, `🎉 Encontrados ${unique.length} aniversários no mês:`);
     unique.forEach(birthday => {
-        const name = birthday.name.toLowerCase().split(' ')[0];
-
-        sendLog(mainWindow, `🎂 ${name.charAt(0).toUpperCase() + name.slice(1)} - ${birthday.birthday.toLocaleDateString()} - Telefone: ${birthday.phone}`);
+        sendLog(mainWindow, `🎂 ${firstName(birthday.name)} - ${birthday.birthday.toLocaleDateString()} - Telefone: ${birthday.phone}`);
     });
 }
+
+export async function getBirthdayToday() {
+    const rows = await getRows();
+    const birthdays = [];
+
+    rows.forEach(row => {
+        const [company, name, date, phone, status] = row;
+        const info = date.split('/');
+        const day = parseInt(info[0]);
+        const month = parseInt(info[1]) - 1; // cuidado: mês começa do zero
+        const year = parseInt(info[2]);
+
+        const birthday = new Date(year, month, day);
+        if (isBirthday(birthday)) {
+            birthdays.push({ name, birthday, phone });
+        }
+    });
+
+    return uniqueArray(birthdays) || [];
+}
+
+

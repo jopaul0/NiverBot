@@ -2,9 +2,8 @@ import dotenv from 'dotenv';
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
-import { connectWhatsapp, disconnectWhatsapp } from "../src/functions/services/whatsapp.js";
-import { clearWhatsappSession } from '../src/functions/services/whatsapp.js';
-import { findBirthdays } from '../src/functions/services/googlesheets.js';
+import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage } from "../src/functions/services/whatsapp.js";
+import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
 
 
 
@@ -64,6 +63,17 @@ app.whenReady().then(() => {
     ipcMain.handle('whatsapp-clear-session', () => {
         clearWhatsappSession(mainWindow);
     });
+
+    ipcMain.handle('whatsapp-send-birthday-message', async () => {
+        const birthdays = await getBirthdayToday();
+        if (birthdays.length === 0) {
+            mainWindow.webContents.send('log-message', 'Nenhum aniversário encontrado para hoje.');
+            return;
+        }
+        await birthdayMessage(mainWindow, birthdays); 
+    });
+
+
 
 
     // Handle Googhle Sheets connection

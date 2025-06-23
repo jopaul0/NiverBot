@@ -1,6 +1,6 @@
 import pkg from 'whatsapp-web.js';
 import { sendLog } from '../utils/sendLog.js';
-const { Client, LocalAuth } = pkg;
+const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
@@ -33,7 +33,6 @@ export function connectWhatsapp(mainWindow) {
         sendLog(mainWindow, 'QR Code recebido, escaneie com seu celular');
 
         qrcode.generate(qr, { small: true }, (qrAscii) => {
-            // Envia o QR Code ASCII para o frontend
             sendLog(mainWindow, qrAscii);
         });
     });
@@ -53,6 +52,31 @@ export async function disconnectWhatsapp(mainWindow) {
     client = null;
     mainWindow.webContents.send('whatsapp-status', false);
     sendLog(mainWindow, 'Desconectado');
+}
+
+export async function birthdayMessage(mainWindow, birthdays) {
+    if (!client) {
+        sendLog(mainWindow, 'Não está conectado ao WhatsApp');
+        return;
+    }
+
+    sendLog(mainWindow, `Enviando mensagens de aniversário para ${birthdays.length} contatos...`);
+    const media = MessageMedia.fromFilePath(path.join(process.cwd(), 'assets', 'birthday.jpeg'));
+
+    for (const birthday of birthdays) {
+        const number = birthday.phone.includes('@c.us') ? birthday.phone : `${birthday.phone}@c.us`;
+        const firstName = birthday.name.split(" ")[0].toLowerCase();
+        const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+        const message = `🎉 Feliz aniversário, ${formattedName}! 🎂 Desejamos a você ótimas festas!`;
+
+        try {
+            await client.sendMessage(number, media);
+            await client.sendMessage(number, message);
+            sendLog(mainWindow, `✅ Mensagem enviada para ${formattedName}`);
+        } catch (erro) {
+            sendLog(mainWindow,`❌ Erro ao enviar para ${formattedName}:${erro}`);
+        }
+    }
 }
 
 export function clearWhatsappSession(mainWindow) {

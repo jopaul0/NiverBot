@@ -16,6 +16,17 @@ const BirthdayPage = ({ connected }) => {
     setLoading(false);
   };
 
+  const handleSendBirthdayMessage = async () => {
+    setLoading(true);
+    try {
+      const response = await window.electronAPI.whatsappSendBirthdayMessage();
+      console.log(response);
+    } catch (error) {
+      window.electronAPI.sendLog(`Erro ao enviar mensagem de aniversário: ${error.message || error}`);
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       <article>
@@ -23,7 +34,7 @@ const BirthdayPage = ({ connected }) => {
         <p>Busque os aniversariantes do dia!</p>
       </article>
       <Button message={"Consultar Aniversários"} onClick={handleFindBirthdays} />
-      <Button message={"Mandar Mensagem"} disable={!connected} />
+      <Button message={"Mandar Mensagem"} disable={!connected} onClick={handleSendBirthdayMessage}/>
       <Button message={"Adiantar Mensagem"} disable={!connected} />
     </>
   );

@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
   minimize: () => ipcRenderer.send('window-minimize'),
   close: () => ipcRenderer.send('window-close'),
+  whatsappSendBirthdayMessage: () => ipcRenderer.invoke('whatsapp-send-birthday-message'),
   findBirthdays: () => ipcRenderer.invoke('find-birthdays'),
   onLogMessage: (callback) => ipcRenderer.on('log-message', (event, message) => callback(message)),
   removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel),
