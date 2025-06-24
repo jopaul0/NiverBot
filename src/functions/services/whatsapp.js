@@ -4,6 +4,8 @@ const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
+import { get } from 'http';
+import { getMessage } from '../utils/messages.js';
 
 let client = null;
 let cancelConnectionRequested = false;
@@ -99,7 +101,7 @@ export async function birthdayMessage(mainWindow, birthdays) {
             }
 
             await client.sendMessage(numberId._serialized, media);
-            await client.sendMessage(numberId._serialized, `🎉 Feliz aniversário, ${formattedName}! 🎂 Desejamos a você ótimas festas!`);
+            await client.sendMessage(numberId._serialized, getMessage(formattedName));
             sendLog(mainWindow, `✅ Mensagem enviada para ${formattedName}`);
         } catch (error) {
             sendLog(mainWindow, `❌ Erro ao enviar para ${formattedName}: ${error.message || error}`);
