@@ -1,7 +1,8 @@
-const { google } = require('googleapis');
-const { isBirthday } = require('../utilities/date');
+import { google } from 'googleapis';
+import { BirthdayInMonth } from '../utils/date.js';
+import { sendLog } from '../utils/sendLog.js';
 
-async function findBirthday() {
+export async function findBirthdays(mainWindow) {
     const auth = new google.auth.GoogleAuth({
         keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
         scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -17,7 +18,7 @@ async function findBirthday() {
     const rows = res.data.values;
     const birthdays = [];
 
-    console.log('🔍 Verificando aniversários...');
+    sendLog(mainWindow, '🔍 Verificando aniversários...');
 
     rows.forEach(row => {
         const [company, name, date, phone, status] = row;
@@ -27,14 +28,21 @@ async function findBirthday() {
         const year = parseInt(info[2]);
 
         const birthday = new Date(year, month, day);
-        if (isBirthday(birthday)) {
+        if (BirthdayInMonth(birthday)) {
             birthdays.push({ name, birthday, phone });
         }
     });
 
-    console.log(`🎉 Encontrados ${birthdays.length} aniversários para hoje.`);
-    return birthdays;
+    const unique = birthdays.filter((value, index, self) =>
+        index === self.findIndex(b =>
+            b.name === value.name && b.birthday.getTime() === value.birthday.getTime()
+        )
+    );
 
+    sendLog(mainWindow, `🎉 Encontrados ${unique.length} aniversários no mês:`);
+    unique.forEach(birthday => {
+        const name = birthday.name.toLowerCase().split(' ')[0];
+
+        sendLog(mainWindow, `🎂 ${name.charAt(0).toUpperCase() + name.slice(1)} - ${birthday.birthday.toLocaleDateString()} - Telefone: ${birthday.phone}`);
+    });
 }
-
-module.exports = { findBirthday };

@@ -1,8 +1,6 @@
 import Button from "../components/Button";
 import { useState } from "react";
 
-console.log("ElectronAPI:", window.electronAPI);
-
 const WhatsappPage = ({ connected, setConnected }) => {
   const [loading, setLoading] = useState(false);
 

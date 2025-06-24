@@ -1,5 +1,5 @@
 import Button from "../components/Button";
-const DocumentsPage = () => {
+const DocumentsPage = ({ connected, setConnected }) => {
   return (
     <>
       <article>

@@ -21,11 +21,18 @@ function App() {
           setConnected={setWhatsappConnected}
         />;
       case "birthday":
-        return <BirthdayPage />;
+        return <BirthdayPage
+          connected={whatsappConnected}
+        />;
       case "documents":
-        return <DocumentsPage />;
+        return <DocumentsPage
+          connected={whatsappConnected}
+        />;
       default:
-        return <WhatsappPage />;
+        return <WhatsappPage
+          connected={whatsappConnected}
+          setConnected={setWhatsappConnected}
+        />;
     }
   };
 

@@ -1,11 +1,18 @@
+import dotenv from 'dotenv';
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectWhatsapp, disconnectWhatsapp } from "../src/functions/services/whatsapp.js";
 import { clearWhatsappSession } from '../src/functions/services/whatsapp.js';
+import { findBirthdays } from '../src/functions/services/googlesheets.js';
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const envPath = path.resolve(__dirname, '../.env');
+dotenv.config({ path: envPath });
 
 let mainWindow = null;
 
@@ -58,11 +65,19 @@ app.whenReady().then(() => {
         clearWhatsappSession(mainWindow);
     });
 
+
+    // Handle Googhle Sheets connection
+    ipcMain.handle('find-birthdays', async () => {
+        await findBirthdays(mainWindow);
+    });
+
     ipcMain.on('send-log', (event, message) => {
         if (mainWindow && mainWindow.webContents) {
             mainWindow.webContents.send('log-message', message);
         }
     });
+
+
 });
 
 app.on('window-all-closed', () => {
