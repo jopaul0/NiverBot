@@ -1,6 +1,6 @@
 import './Status.css';
 
-const Status = ({active}) => {
+const Status = ({active, loading}) => {
     return(
         <section className='status-container'>
             <div className='status-content'>

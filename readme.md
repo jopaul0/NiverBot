@@ -1,9 +1,6 @@
 # OnTrigger
 
-<p align="left">
-  <img src="./frontend/assets/logo.png" alt="Logo" width="200" style="vertical-align: middle;"/>
-  <img src="./frontend/assets/ontrigger-text.png" alt="OnTrigger Texto" height="200" style="vertical-align: middle;"/>
-</p>
+  <p align='center'><img src="./assets/logo.png" alt="Logo" width="500" style="vertical-align: middle;"/></p>
 
 **OnTrigger** é uma aplicação desktop feita com **React** + **Electron** que automatiza o monitoramento de planilhas do Google e envia **mensagens automáticas no WhatsApp** com base em regras personalizadas. Um caso de uso comum é o envio de alertas para pessoas que estão devendo documentos, tudo de forma automatizada.
 
@@ -46,14 +43,7 @@
     npm install
     ```
 
-3. Vá até o diretório do frontend e instale as dependências:
-    ```bash
-    cd frontend
-    npm install
-    cd ..
-    ```
-
-4. Configure as variáveis de ambiente:
+3. Configure as variáveis de ambiente:
     Crie um arquivo .env na raiz com o seguinte conteúdo:
     ```bash
     SPREADSHEET_ID=seu_id_da_planilha
@@ -61,9 +51,9 @@
     GOOGLE_APPLICATION_CREDENTIALS=./credenciais.json
     ```
 
-5. Coloque o arquivo credenciais.json (baixado do Google Cloud ao criar a conta de serviço) na raiz do projeto.
+4. Coloque o arquivo credenciais.json (baixado do Google Cloud ao criar a conta de serviço) na raiz do projeto.
 
-6. Compartilhe sua planilha com o e-mail da conta de serviço (ex: ontrigger@nome-do-projeto.iam.gserviceaccount.com).
+5. Compartilhe sua planilha com o e-mail da conta de serviço (ex: ontrigger@nome-do-projeto.iam.gserviceaccount.com).
 
 ## 🚀 Executando o projeto
      ```bash

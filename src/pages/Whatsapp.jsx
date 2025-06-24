@@ -1,9 +1,6 @@
 import Button from "../components/Button";
-import { useState } from "react";
 
-const WhatsappPage = ({ connected, setConnected }) => {
-  const [loading, setLoading] = useState(false);
-
+const WhatsappPage = ({ connected, setConnected, loading, setLoading }) => {
   const handleConnect = async () => {
     setLoading(true);
     try {
@@ -12,7 +9,6 @@ const WhatsappPage = ({ connected, setConnected }) => {
     } catch (error) {
       window.electronAPI.sendLog(`Erro ao conectar: ${error.message || error}`);
     }
-    setLoading(false);
   };
 
   const handleDisconnect = async () => {
@@ -28,12 +24,22 @@ const WhatsappPage = ({ connected, setConnected }) => {
 
   const handleClearSession = async () => {
     setLoading(true);
-  try {
-    await window.electronAPI.clearWhatsappSession();
-  } catch (error) {
-    window.electronAPI.sendLog(`Erro ao limpar sessão: ${error.message || error}`);
+    try {
+      await window.electronAPI.clearWhatsappSession();
+    } catch (error) {
+      window.electronAPI.sendLog(`Erro ao limpar sessão: ${error.message || error}`);
+    }
+    setLoading(false);
   }
-  setLoading(false);
+
+  const handleCancelConnection = async () => {
+    setLoading(true);
+    try {
+      await window.electronAPI.cancelWhatsappConnection();
+    } catch (error) {
+      window.electronAPI.sendLog(`Erro ao cancelar conexão: ${error.message || error}`);
+    }
+    setLoading(false);
   }
 
   return (
@@ -42,9 +48,11 @@ const WhatsappPage = ({ connected, setConnected }) => {
         <h1>WhatsApp</h1>
         <p>Envie mensagens automáticas!</p>
       </article>
-      <Button message={"Conectar ao WhatsApp"} disable={connected} onClick={handleConnect} />
-      <Button message={"Desconectar"} disable={!connected} onClick={handleDisconnect} />
-      <Button message={"Limpar Sessão"} disable={connected} onClick={handleClearSession} />
+      <Button message={loading && !connected ? "Cancelar Conexão" : "Conectar ao WhatsApp"} disable={connected} onClick={loading && !connected
+        ? handleCancelConnection
+        : handleConnect} />
+      <Button message={"Desconectar"} disable={!connected || loading} onClick={handleDisconnect} />
+      <Button message={"Limpar Sessão"} disable={connected || loading} onClick={handleClearSession} />
     </>
   );
 }

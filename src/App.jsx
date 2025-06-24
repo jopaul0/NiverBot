@@ -10,41 +10,18 @@ import Status from "./components/Status"
 
 function App() {
   const nodeRef = useRef(null);
-
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("whatsapp");
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "whatsapp":
-        return <WhatsappPage
-          connected={whatsappConnected}
-          setConnected={setWhatsappConnected}
-        />;
-      case "birthday":
-        return <BirthdayPage
-          connected={whatsappConnected}
-        />;
-      case "documents":
-        return <DocumentsPage
-          connected={whatsappConnected}
-        />;
-      default:
-        return <WhatsappPage
-          connected={whatsappConnected}
-          setConnected={setWhatsappConnected}
-        />;
-    }
-  };
-
   const [whatsappConnected, setWhatsappConnected] = useState(false);
   useEffect(() => {
     const handleStatus = (status) => {
       setWhatsappConnected(status);
+      setLoading(false);
     };
 
     window.electronAPI.removeAllListeners('whatsapp-status');
     window.electronAPI.onWhatsappStatus(handleStatus);
-
+    
     return () => {
       window.electronAPI.removeAllListeners('whatsapp-status');
     };
@@ -64,6 +41,38 @@ function App() {
       window.electronAPI.removeAllListeners('log-message');
     };
   }, []);
+
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "whatsapp":
+        return <WhatsappPage
+          connected={whatsappConnected}
+          setConnected={setWhatsappConnected}
+          loading={loading}
+          setLoading={setLoading}
+        />;
+      case "birthday":
+        return <BirthdayPage
+          connected={whatsappConnected}
+          loading={loading}
+          setLoading={setLoading}
+        />;
+      case "documents":
+        return <DocumentsPage
+          connected={whatsappConnected}
+          loading={loading}
+          setLoading={setLoading}
+        />;
+      default:
+        return <WhatsappPage
+          connected={whatsappConnected}
+          setConnected={setWhatsappConnected}
+          loading={loading}
+          setLoading={setLoading}
+        />;
+    }
+  };
 
   return (
     <>
@@ -87,7 +96,7 @@ function App() {
         <section>
           <Terminal logs={logs} setLog={setLogs} />
         </section>
-        <Status active={whatsappConnected} />
+        <Status active={whatsappConnected} loading={loading} />
       </main>
     </>
   )

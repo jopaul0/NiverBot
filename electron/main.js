@@ -2,8 +2,9 @@ import dotenv from 'dotenv';
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
-import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage } from "../src/functions/services/whatsapp.js";
+import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from "../src/functions/services/whatsapp.js";
 import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
+import { sendLog } from '../src/functions/utils/sendLog.js';
 
 
 
@@ -36,7 +37,6 @@ function createWindow() {
 
     const startUrl = process.env.ELECTRON_START_URL || 'http://localhost:5173';
     mainWindow.loadURL(startUrl);
-    mainWindow.setMenu(null);
 }
 
 app.whenReady().then(() => {
@@ -53,6 +53,7 @@ app.whenReady().then(() => {
 
     // Handle WhatsApp connection
     ipcMain.handle('whatsapp-connect', async () => {
+        sendLog(mainWindow, '⏳ Conectando...');
         await connectWhatsapp(mainWindow);
     });
 
@@ -64,13 +65,17 @@ app.whenReady().then(() => {
         clearWhatsappSession(mainWindow);
     });
 
+    ipcMain.handle('cancel-whatsapp-connection', () => {
+        cancelWhatsappConnection(BrowserWindow.getFocusedWindow());
+    });
+
     ipcMain.handle('whatsapp-send-birthday-message', async () => {
         const birthdays = await getBirthdayToday();
         if (birthdays.length === 0) {
             mainWindow.webContents.send('log-message', 'Nenhum aniversário encontrado para hoje.');
             return;
         }
-        await birthdayMessage(mainWindow, birthdays); 
+        await birthdayMessage(mainWindow, birthdays);
     });
 
 

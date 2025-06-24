@@ -1,6 +1,6 @@
 import './Header.css';
 import Tabs from '../Tabs';
-import logo from '../../../assets/logo.png'; // Adjust the path as necessary
+import logo from '../../../assets/iconelogo.png'; // Adjust the path as necessary
 import TitleBar from '../TitleBar';
 
 const Header = ({ activeTab, setActiveTab }) => {

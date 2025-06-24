@@ -21,10 +21,9 @@ async function getRows() {
 }
 
 export async function findBirthdays(mainWindow) {
+    sendLog(mainWindow, '🔍 Verificando aniversários...');
     const rows = await getRows();
     const birthdays = [];
-
-    sendLog(mainWindow, '🔍 Verificando aniversários...');
 
     rows.forEach(row => {
         const [company, name, date, phone, status] = row;

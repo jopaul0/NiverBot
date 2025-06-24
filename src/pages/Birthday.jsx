@@ -1,10 +1,7 @@
 import Button from "../components/Button";
-import { useState } from "react";
 
-const BirthdayPage = ({ connected }) => {
-
-  const [loading, setLoading] = useState(false);
-
+const BirthdayPage = ({ connected, loading, setLoading }) => {
+  // Função de busca de aniversários
   const handleFindBirthdays = async () => {
     setLoading(true);
     try {
@@ -16,6 +13,7 @@ const BirthdayPage = ({ connected }) => {
     setLoading(false);
   };
 
+  // Função para enviar mensagem de aniversário
   const handleSendBirthdayMessage = async () => {
     setLoading(true);
     try {
@@ -27,15 +25,16 @@ const BirthdayPage = ({ connected }) => {
     setLoading(false);
   };
 
+
   return (
     <>
       <article>
         <h1>Aniversários</h1>
         <p>Busque os aniversariantes do dia!</p>
       </article>
-      <Button message={"Consultar Aniversários"} onClick={handleFindBirthdays} />
-      <Button message={"Mandar Mensagem"} disable={!connected} onClick={handleSendBirthdayMessage}/>
-      <Button message={"Adiantar Mensagem"} disable={!connected} />
+      <Button message={"Consultar Aniversários"} disable={loading} onClick={handleFindBirthdays} />
+      <Button message={"Mandar Mensagem"} disable={!connected || loading} onClick={handleSendBirthdayMessage}/>
+      <Button message={"Adiantar Mensagem"} disable={!connected || loading} onClick={() => {}}/>
     </>
   );
 }
