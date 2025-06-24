@@ -8,6 +8,8 @@
 }
 
 .title-bar button {
+    display: flex;
+    align-items: center;
     background: none;
     border: none;
     color: #F9F4AD;
