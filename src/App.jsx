@@ -85,7 +85,7 @@ function App() {
           </SwitchTransition>
         </aside>
         <section>
-          <Terminal logs={logs} />
+          <Terminal logs={logs} setLog={setLogs} />
         </section>
         <Status active={whatsappConnected} />
       </main>
