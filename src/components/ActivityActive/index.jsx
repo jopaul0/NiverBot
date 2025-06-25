@@ -1,3 +1,5 @@
+import BirthdayManual from '../../pages/activities/Birthday';
+import DocumentsManual from '../../pages/activities/Documents';
 import './ActivityActive.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -24,7 +26,17 @@ const variants = {
     },
 };
 
-const ActivityActive = ({ activity }) => {
+const ActivityActive = ({ activity, setActivity, activityTab }) => {
+    const renderContent = () => {
+        switch(activityTab){
+            case 'birthday':
+                return <BirthdayManual/>;
+            case 'documents':
+                return <DocumentsManual/>;
+            default:
+                return <BirthdayManual/>;
+        }
+    }
     return (
         <AnimatePresence mode="wait">
             {activity && (
@@ -35,7 +47,7 @@ const ActivityActive = ({ activity }) => {
                     animate={["animate", "scaleUp"]}
                     exit={["scaleDown", "exit"]}
                 >
-                    Atividade Ativa
+                    {renderContent()}
                 </motion.div>
             )}
         </AnimatePresence>

@@ -1,11 +1,11 @@
 
 import { CSSTransition, SwitchTransition } from "react-transition-group"
-import BirthdayPage from "../../pages/Birthday"
-import WhatsappPage from "../../pages/Whatsapp"
-import DocumentsPage from "../../pages/Documents"
+import BirthdayPage from "../../pages/tabs/Birthday"
+import WhatsappPage from "../../pages/tabs/Whatsapp"
+import DocumentsPage from "../../pages/tabs/Documents"
 import './TabPage.css';
 
-const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsappConnected, loading, setLoading, activity }) => {
+const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsappConnected, loading, setLoading, activity, setActivityTab }) => {
     const renderContent = () => {
         switch (activeTab) {
             case "whatsapp":
@@ -22,12 +22,16 @@ const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsa
                     setLoading={setLoading}
                     activity={activity}
                     setActivity={setActivity}
+                    setActivityTab={setActivityTab}
                 />;
             case "documents":
                 return <DocumentsPage
                     connected={whatsappConnected}
                     loading={loading}
                     setLoading={setLoading}
+                    setActivityTab={setActivityTab}
+                    activity={activity}
+                    setActivity={setActivity}
                 />;
             default:
                 return <WhatsappPage

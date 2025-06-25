@@ -1,0 +1,29 @@
+.activity-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    padding: 3rem;
+    gap: 1rem;
+}
+
+.activity-container div {
+    overflow-y: auto;
+}
+
+.activity-container div::-webkit-scrollbar {
+    width: 4px;
+}
+
+.activity-container div::-webkit-scrollbar-track {
+    background: #ffffff00;
+}
+
+.activity-container div::-webkit-scrollbar-thumb {
+    background-color: #204A53;
+    border-radius: 10px;
+}
+
+.activity-container div::-webkit-scrollbar-thumb:hover {
+    background-color: #193941;
+}

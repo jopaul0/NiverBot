@@ -15,6 +15,7 @@ const App = () => {
   const [whatsappConnected, setWhatsappConnected] = useState(false);
   const [logs, setLogs] = useState([]);
   const [activity, setActivity] = useState(false);
+  const [activityTab, setActivityTab] = useState("birthday")
 
   //Effects 
   useEffect(() => {
@@ -59,13 +60,17 @@ const App = () => {
           whatsappConnected={whatsappConnected}
           setConnected={setWhatsappConnected}
           loading={loading}
-          setLoading={setLoading} />
+          setLoading={setLoading}
+          setActivityTab={setActivityTab}
+        />
+
         <ActivityArea
           logs={logs}
           setLogs={setLogs}
           setActivity={setActivity}
           activity={activity}
-        /> 
+          activityTab={activityTab}
+        />
         <Status active={whatsappConnected} loading={loading} />
       </main>
 
