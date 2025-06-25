@@ -23,13 +23,11 @@ const WhatsappPage = ({ connected, setConnected, loading, setLoading }) => {
   };
 
   const handleClearSession = async () => {
-    setLoading(true);
     try {
       await window.electronAPI.clearWhatsappSession();
     } catch (error) {
       window.electronAPI.sendLog(`Erro ao limpar sessão: ${error.message || error}`);
     }
-    setLoading(false);
   }
 
   const handleCancelConnection = async () => {

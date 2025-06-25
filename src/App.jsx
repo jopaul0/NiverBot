@@ -62,7 +62,7 @@ const App = () => {
           setLoading={setLoading} />
         <ActivityArea
           logs={logs}
-          setLog={setLogs}
+          setLogs={setLogs}
           setActivity={setActivity}
           activity={activity}
         /> 

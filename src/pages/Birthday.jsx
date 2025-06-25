@@ -34,7 +34,7 @@ const BirthdayPage = ({ connected, loading, setLoading, setActivity, activity })
       </article>
       <Button message={"Consultar Aniversários"} disable={loading} onClick={handleFindBirthdays} />
       <Button message={"Mandar Mensagem"} disable={!connected || loading} onClick={handleSendBirthdayMessage} />
-      <Button message={"Adiantar Mensagem"} onClick={() => setActivity(!activity)} />
+      <Button message={"Adiantar Mensagem"}  onClick={() => setActivity(!activity)} />
     </>
   );
 }

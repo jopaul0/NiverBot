@@ -21,7 +21,7 @@ function createWindow() {
         width: 1000,
         height: 800,
         resizable: false,
-        frame: false,
+        frame: true,
         icon: path.join(__dirname, '..', 'assets', 'iconelogo.png'),
         title: 'OnTrigger',
         titleBarOverlay: {
