@@ -14,6 +14,7 @@
   "dependencies": {
     "chance": "^1.1.13",
     "dotenv": "^16.5.0",
+    "framer-motion": "^12.19.1",
     "googleapis": "^150.0.1",
     "lucide-react": "^0.518.0",
     "moment-timezone": "^0.5.45",

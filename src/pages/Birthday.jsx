@@ -1,6 +1,6 @@
 import Button from "../components/Button";
 
-const BirthdayPage = ({ connected, loading, setLoading }) => {
+const BirthdayPage = ({ connected, loading, setLoading, setActivity, activity }) => {
   // Função de busca de aniversários
   const handleFindBirthdays = async () => {
     setLoading(true);
@@ -33,8 +33,8 @@ const BirthdayPage = ({ connected, loading, setLoading }) => {
         <p>Busque os aniversariantes do dia!</p>
       </article>
       <Button message={"Consultar Aniversários"} disable={loading} onClick={handleFindBirthdays} />
-      <Button message={"Mandar Mensagem"} disable={!connected || loading} onClick={handleSendBirthdayMessage}/>
-      <Button message={"Adiantar Mensagem"} disable={!connected || loading} onClick={() => {}}/>
+      <Button message={"Mandar Mensagem"} disable={!connected || loading} onClick={handleSendBirthdayMessage} />
+      <Button message={"Adiantar Mensagem"} onClick={() => setActivity(!activity)} />
     </>
   );
 }

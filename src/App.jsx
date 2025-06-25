@@ -1,18 +1,22 @@
-import Header from "./components/Header"
+//Imports
 import { useState, useRef, useEffect } from "react"
-import BirthdayPage from "./pages/Birthday"
-import WhatsappPage from "./pages/Whatsapp"
-import DocumentsPage from "./pages/Documents"
-import Terminal from "./components/Terminal"
-import { CSSTransition, SwitchTransition } from "react-transition-group"
-import "./App.css"
+import Header from "./components/Header"
+import TabPage from "./components/TabPage"
 import Status from "./components/Status"
+import ActivityArea from "./components/ActivityArea"
+import "./App.css"
+
 
 function App() {
+  //Consts
   const nodeRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("whatsapp");
   const [whatsappConnected, setWhatsappConnected] = useState(false);
+  const [logs, setLogs] = useState([]);
+  const [activity, setActivity] = useState(false);
+
+  //Effects 
   useEffect(() => {
     const handleStatus = (status) => {
       setWhatsappConnected(status);
@@ -21,20 +25,18 @@ function App() {
 
     window.electronAPI.removeAllListeners('whatsapp-status');
     window.electronAPI.onWhatsappStatus(handleStatus);
-    
+
     return () => {
       window.electronAPI.removeAllListeners('whatsapp-status');
     };
   }, []);
-
-  const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     const handleLog = (msg) => {
       setLogs(prev => [...prev, msg]);
     };
 
-    window.electronAPI.removeAllListeners('log-message'); // Só funciona se essa função existir no preload!
+    window.electronAPI.removeAllListeners('log-message');
     window.electronAPI.onLogMessage(handleLog);
 
     return () => {
@@ -43,61 +45,30 @@ function App() {
   }, []);
 
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "whatsapp":
-        return <WhatsappPage
-          connected={whatsappConnected}
-          setConnected={setWhatsappConnected}
-          loading={loading}
-          setLoading={setLoading}
-        />;
-      case "birthday":
-        return <BirthdayPage
-          connected={whatsappConnected}
-          loading={loading}
-          setLoading={setLoading}
-        />;
-      case "documents":
-        return <DocumentsPage
-          connected={whatsappConnected}
-          loading={loading}
-          setLoading={setLoading}
-        />;
-      default:
-        return <WhatsappPage
-          connected={whatsappConnected}
-          setConnected={setWhatsappConnected}
-          loading={loading}
-          setLoading={setLoading}
-        />;
-    }
-  };
 
+  //JSX
   return (
     <>
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
       <main>
-        <aside>
-          <SwitchTransition>
-            <CSSTransition
-              key={activeTab}
-              timeout={300}
-              classNames="fade"
-              nodeRef={nodeRef}
-              unmountOnExit
-            >
-              <div ref={nodeRef} className="tab-page">
-                {renderContent()}
-              </div>
-            </CSSTransition>
-          </SwitchTransition>
-        </aside>
-        <section>
-          <Terminal logs={logs} setLog={setLogs} />
-        </section>
+        <TabPage
+          activeTab={activeTab}
+          nodeRef={nodeRef}
+          setActivity={setActivity}
+          activity={activity}
+          whatsappConnected={whatsappConnected}
+          setConnected={setWhatsappConnected}
+          loading={loading}
+          setLoading={setLoading} />
+        <ActivityArea
+          logs={logs}
+          setLog={setLogs}
+          setActivity={setActivity}
+          activity={activity}
+        /> 
         <Status active={whatsappConnected} loading={loading} />
       </main>
+
     </>
   )
 }
