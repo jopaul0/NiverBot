@@ -11,14 +11,15 @@
     cursor: pointer;
     font-size: 18px;
     border-radius: 10px;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    z-index: 1;
     position: relative;
 }
 
 .tabs button.active {
     color: #204A53;
-    background-color: #f1f0ec;
 }
+
 .tabs button.active:hover::after {
     transform: scaleX(0);
 }
@@ -38,4 +39,21 @@
 
 .tabs button:hover::after {
     transform: scaleX(1);
+}
+
+.tabs-container {
+    position: relative;
+    background-color: #204A53;
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-indicator {
+    position: absolute;
+    inset: 0;
+    background-color: #f1f0ec;
+    border-radius: 10px;
+    z-index: -1;
 }

@@ -7,7 +7,7 @@ import ActivityArea from "./components/ActivityArea"
 import "./App.css"
 
 
-function App() {
+const App = () => {
   //Consts
   const nodeRef = useRef(null);
   const [loading, setLoading] = useState(false);
