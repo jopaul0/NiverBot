@@ -1,5 +1,6 @@
-# Credenciais do Google (NUNCA versionar isso!)
+# Data
 credenciais.json
+/data/
 
 # Logs
 logs

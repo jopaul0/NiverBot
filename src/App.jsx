@@ -1,10 +1,13 @@
 //Imports
 import { useState, useRef, useEffect } from "react"
+import "./App.css"
+import Config from "./components/Config"
 import Header from "./components/Header"
 import TabPage from "./components/TabPage"
 import Status from "./components/Status"
 import ActivityArea from "./components/ActivityArea"
-import "./App.css"
+
+
 
 
 const App = () => {
@@ -15,6 +18,7 @@ const App = () => {
   const [whatsappConnected, setWhatsappConnected] = useState(false);
   const [logs, setLogs] = useState([]);
   const [activity, setActivity] = useState(false);
+  const [config, setConfig] = useState(false);
   const [activityTab, setActivityTab] = useState("birthday")
 
   //Effects 
@@ -45,12 +49,19 @@ const App = () => {
     };
   }, []);
 
-
-
   //JSX
   return (
     <>
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Header
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        config={config}
+        setConfig={setConfig}
+      />
+      <Config
+        visible={config}
+        setVisible={setConfig}
+      />
       <main>
         <TabPage
           activeTab={activeTab}
@@ -71,7 +82,10 @@ const App = () => {
           activity={activity}
           activityTab={activityTab}
         />
-        <Status active={whatsappConnected} loading={loading} />
+        <Status
+          active={whatsappConnected}
+          loading={loading}
+        />
       </main>
 
     </>

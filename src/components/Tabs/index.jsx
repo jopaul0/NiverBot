@@ -1,13 +1,7 @@
 import './Tabs.css';
 import { motion } from 'framer-motion';
 
-const tabs = [
-    { id: 'whatsapp', label: 'WhatsApp' },
-    { id: 'birthday', label: 'Aniversários' },
-    { id: 'documents', label: 'Documentos' }
-];
-
-const Tabs = ({ activeTab, setActiveTab }) => {
+const Tabs = ({ activeTab, setActiveTab, tabs, id = 'default' }) => {
     return (
         <div className="tabs">
             {tabs.map((tab) => (
@@ -19,7 +13,7 @@ const Tabs = ({ activeTab, setActiveTab }) => {
                     {tab.label}
                     {activeTab === tab.id && (
                         <motion.div
-                            layoutId="tab-indicator"
+                            layoutId={`tab-indicator-${id}`}
                             className="tab-indicator"
                             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                         />
@@ -29,5 +23,6 @@ const Tabs = ({ activeTab, setActiveTab }) => {
         </div>
     );
 };
+
 
 export default Tabs;

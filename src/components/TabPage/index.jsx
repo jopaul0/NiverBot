@@ -43,7 +43,7 @@ const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsa
         }
     };
     return (
-        <aside>
+        <section className="tab-section">
             <SwitchTransition>
                 <CSSTransition
                     key={activeTab}
@@ -57,7 +57,7 @@ const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsa
                     </div>
                 </CSSTransition>
             </SwitchTransition>
-        </aside>
+        </section>
     );
 }
 

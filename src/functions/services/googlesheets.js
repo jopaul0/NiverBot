@@ -1,19 +1,28 @@
 import { google } from 'googleapis';
 import { BirthdayInMonth, isBirthday } from '../utils/date.js';
 import { sendLog } from '../utils/sendLog.js';
+import { readJsonFile } from '../utils/data.js';
 import { uniqueArray, firstName } from '../utils/format.js';
 
-async function getRows() {
+
+async function getRows(mainWindow) {
+    const config = await readJsonFile(mainWindow);
+
+    if (!config || !config.googleSheets) {
+        throw new Error('❌ Configuração do Google Sheets ausente ou inválida.');
+    }
+
     const auth = new google.auth.GoogleAuth({
-        keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+        keyFile: config.googleSheets.credentialsPath,
         scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
     });
+
     const client = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: client });
 
     const res = await sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.SPREADSHEET_ID,
-        range: process.env.SPREADSHEET_RANGE,
+        spreadsheetId: config.googleSheets.spreadsheetId,
+        range: config.googleSheets.range,
     });
 
     const rows = res.data.values;

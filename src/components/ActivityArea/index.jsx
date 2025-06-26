@@ -1,6 +1,6 @@
 import './ActivityArea.css';
-import Terminal from '../Terminal';
-import ActivityActive from '../ActivityActive';
+import Terminal from './Terminal';
+import ActivityActive from './ActivityActive';
 const ActivityArea = ({ logs, setLogs, setActivity, activity, activityTab }) => {
     return (
         <section className='activity-area'>

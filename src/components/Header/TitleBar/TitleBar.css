@@ -5,14 +5,32 @@
     padding: 0 10px;
     background-color: #1a3941;
     -webkit-app-region: drag;
+    z-index: 1000;
 }
+
+.window-buttons {
+    display: flex;
+    position: relative;
+}
+
+.window-buttons::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 15px;
+    background-color: #f9fcad5d;
+}
+
 
 .title-bar button {
     display: flex;
     align-items: center;
     background: none;
     border: none;
-    color: #F9F4AD;
+    color: #F9FcAD;
     cursor: pointer;
     padding: 5px 10px;
     -webkit-app-region: no-drag;

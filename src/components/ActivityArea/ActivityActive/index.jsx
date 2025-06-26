@@ -1,5 +1,5 @@
-import BirthdayManual from '../../pages/activities/Birthday';
-import DocumentsManual from '../../pages/activities/Documents';
+import BirthdayManual from '../../../pages/activities/Birthday';
+import DocumentsManual from '../../../pages/activities/Documents';
 import './ActivityActive.css';
 import { motion, AnimatePresence } from 'framer-motion';
 

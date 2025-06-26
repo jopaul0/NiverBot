@@ -4,7 +4,6 @@ const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
-import { get } from 'http';
 import { getMessage } from '../utils/messages.js';
 
 let client = null;

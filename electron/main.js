@@ -1,18 +1,15 @@
-import dotenv from 'dotenv';
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from "../src/functions/services/whatsapp.js";
 import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
 import { sendLog } from '../src/functions/utils/sendLog.js';
+import { dataDirectoryExists } from '../src/functions/utils/data.js';
 
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const envPath = path.resolve(__dirname, '../.env');
-dotenv.config({ path: envPath });
 
 let mainWindow = null;
 
@@ -37,6 +34,7 @@ function createWindow() {
 
     const startUrl = process.env.ELECTRON_START_URL || 'http://localhost:5173';
     mainWindow.loadURL(startUrl);
+
 }
 
 app.whenReady().then(() => {
@@ -92,7 +90,7 @@ app.whenReady().then(() => {
         }
     });
 
-
+    dataDirectoryExists(mainWindow);
 });
 
 app.on('window-all-closed', () => {

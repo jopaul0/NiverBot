@@ -1,14 +1,20 @@
 import './Header.css';
 import Tabs from '../Tabs';
-import logo from '../../../assets/iconelogo.png'; // Adjust the path as necessary
-import TitleBar from '../TitleBar';
+import logo from '../../../assets/iconelogo.png';
+import TitleBar from './TitleBar';
 
-const Header = ({ activeTab, setActiveTab }) => {
+const tabs = [
+    { id: 'whatsapp', label: 'WhatsApp' },
+    { id: 'birthday', label: 'Aniversários' },
+    { id: 'documents', label: 'Documentos' }
+];
+
+const Header = ({ activeTab, setActiveTab, config, setConfig }) => {
     return (
         <>
 
             <header className="header">
-                <TitleBar />
+                <TitleBar config={config} setConfig={setConfig}/>
                 <div className="header-content">
                     <div className='logo-content'>
                         <img
@@ -19,7 +25,7 @@ const Header = ({ activeTab, setActiveTab }) => {
                         <h1>OnTrigger</h1>
                     </div>
 
-                    <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs}/>
                 </div>
             </header>
         </>
