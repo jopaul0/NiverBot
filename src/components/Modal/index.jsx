@@ -1,6 +1,7 @@
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import './Modal.css';
 
 export const ModalBase = ({ isOpen, onClose, children, className = '' }) => {
@@ -10,17 +11,17 @@ export const ModalBase = ({ isOpen, onClose, children, className = '' }) => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape' && isOpen) {
                 e.preventDefault();
-                e.stopPropagation(); // bloqueia o evento para outros listeners
+                e.stopPropagation();
                 onClose();
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown, true); // "true" ativa o modo capture
-
+        document.addEventListener('keydown', handleKeyDown, true);
         return () => {
             document.removeEventListener('keydown', handleKeyDown, true);
         };
     }, [isOpen, onClose]);
+
     return createPortal(
         <AnimatePresence>
             {isOpen && (
@@ -33,28 +34,14 @@ export const ModalBase = ({ isOpen, onClose, children, className = '' }) => {
                 >
                     <motion.div
                         className={`modal-content ${className}`}
-                        initial={{
-                            y: 200,
-                            opacity: 0,
-                            scale: 0.95
-                        }}
-                        animate={{
-                            y: 0,
-                            opacity: 1,
-                            scale: 1,
-                            transition: {
-                                duration: 0.4,
-                                ease: 'easeOut'
-                            }
-                        }}
-                        exit={{
-                            y: 200,
-                            opacity: 0,
-                            scale: 0.95,
-                            transition: { duration: 0.3, ease: 'easeIn' }
-                        }}
+                        initial={{ y: 200, opacity: 0, scale: 0.95 }}
+                        animate={{ y: 0, opacity: 1, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } }}
+                        exit={{ y: 200, opacity: 0, scale: 0.95, transition: { duration: 0.3, ease: 'easeIn' } }}
                         onClick={(e) => e.stopPropagation()}
                     >
+                        <button className="modal-close-button" onClick={onClose} aria-label="Fechar modal">
+                            <X size={20} />
+                        </button>
                         {children}
                     </motion.div>
                 </motion.div>
