@@ -1,10 +1,11 @@
 import './Config.css'
 import Tabs from '../Tabs'
 import { useState, useEffect } from 'react';
-import CredencialPage from '../../pages/config/Messages';
+import CredencialPage from '../../pages/config/Credencials';
 import SheetPage from '../../pages/config/Sheet';
 import MessagePage from '../../pages/config/Messages';
 import HelpPage from '../../pages/config/Help';
+import { ArrowLeft } from 'lucide-react';
 
 
 const Config = ({ visible, setVisible }) => {
@@ -47,6 +48,13 @@ const Config = ({ visible, setVisible }) => {
     return (
         <aside className={`config-container ${visible ? 'visible' : ''}`}>
             <div className='header-config'>
+                <button
+                    className='arrow-button'
+                    onClick={() => {
+                        setVisible(!visible);
+                    }}>
+                    <ArrowLeft size={30} className=''/>
+                </button>
                 <Tabs activeTab={activeTabConfig} setActiveTab={setActiveTabConfig} tabs={tabs} id='config-tabs' />
             </div>
             <div className='config-content'>

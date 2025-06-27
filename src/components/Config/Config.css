@@ -27,9 +27,27 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+.arrow-button{
+    position: absolute;
+    width: 4rem;
+    background-color: transparent;
+    border: none;
+    color: #F9FcAD;
+    margin: 0 30px;
+    transition: all .3s ease;
+}
+.arrow-button:hover{
+    color: #cfc98d;
+    transform: translateX(-20px);
+    cursor: pointer;
 }
 
+.header-config .tabs{
+    margin: 0 auto;   
+}
 .config-content {
     border-radius: 10px;
     background-color: #295c69;
