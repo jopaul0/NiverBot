@@ -11,3 +11,10 @@ export function uniqueArray(array) {
     ))
   );
 }
+
+export function truncateFileName(name, maxLength = 30) {
+    if (name.length <= maxLength) return name;
+    const ext = name.split('.').pop();
+    const base = name.substring(0, maxLength - ext.length - 5);
+    return `${base}...${ext}`;
+};

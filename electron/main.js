@@ -5,6 +5,7 @@ import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMess
 import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
 import { sendLog } from '../src/functions/utils/sendLog.js';
 import { dataDirectoryExists } from '../src/functions/utils/data.js';
+import fs from 'fs'
 
 
 
@@ -76,9 +77,6 @@ app.whenReady().then(() => {
         await birthdayMessage(mainWindow, birthdays);
     });
 
-
-
-
     // Handle Googhle Sheets connection
     ipcMain.handle('find-birthdays', async () => {
         await findBirthdays(mainWindow);
@@ -91,6 +89,17 @@ app.whenReady().then(() => {
     });
 
     dataDirectoryExists(mainWindow);
+
+    ipcMain.on('save-credentials', (event, jsonData) => {
+        const filePath = path.join(process.cwd(), 'data', 'credenciais.json');
+
+        try {
+            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), 'utf-8');
+            sendLog(mainWindow,'✅ Arquivo credenciais.json salvo com sucesso!');
+        } catch (error) {
+            sendLog(mainWindow, ('❌ Erro ao salvar credenciais: ',error));
+        }
+    });
 });
 
 app.on('window-all-closed', () => {

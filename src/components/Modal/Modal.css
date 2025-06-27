@@ -1,0 +1,29 @@
+.modal-wrapper {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #f1f0ec;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    z-index: 1001;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.modal-success {
+    border-left: 8px solid #28a745;
+}
+
+.modal-error {
+    border-left: 8px solid #dc3545;
+}

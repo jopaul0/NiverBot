@@ -10,6 +10,7 @@ import ActivityArea from "./components/ActivityArea"
 
 
 
+
 const App = () => {
   //Consts
   const nodeRef = useRef(null);
@@ -87,7 +88,6 @@ const App = () => {
           loading={loading}
         />
       </main>
-
     </>
   )
 }

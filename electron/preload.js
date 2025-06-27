@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
+  saveCredentials: (jsonData) => ipcRenderer.send("save-credentials", jsonData),
   minimize: () => ipcRenderer.send('window-minimize'),
   close: () => ipcRenderer.send('window-close'),
   whatsappSendBirthdayMessage: () => ipcRenderer.invoke('whatsapp-send-birthday-message'),
