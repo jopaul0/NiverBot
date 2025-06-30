@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from "../src/functions/services/whatsapp.js";
 import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
 import { sendLog } from '../src/functions/utils/sendLog.js';
-import { dataDirectoryExists } from '../src/functions/utils/data.js';
+import { dataDirectoryExists, updateSpreadsheetId } from '../src/functions/utils/data.js';
 import fs from 'fs'
 
 
@@ -95,10 +95,14 @@ app.whenReady().then(() => {
 
         try {
             fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), 'utf-8');
-            sendLog(mainWindow,'✅ Arquivo credenciais.json salvo com sucesso!');
+            sendLog(mainWindow, '✅ Arquivo credenciais.json salvo com sucesso!');
         } catch (error) {
-            sendLog(mainWindow, ('❌ Erro ao salvar credenciais: ',error));
+            sendLog(mainWindow, ('❌ Erro ao salvar credenciais: ', error));
         }
+    });
+
+    ipcMain.on('save-sheet-id', (event, sheetId) => {
+        updateSpreadsheetId(mainWindow, sheetId);
     });
 });
 

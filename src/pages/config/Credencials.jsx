@@ -60,6 +60,5 @@ export default function CredencialPage() {
             <SuccessModal isOpen={success} onClose={() => setSuccess(false)} message="Arquivo enviado com sucesso!" />
             <ErrorModal isOpen={error} onClose={() => setError(false)} message="Ocorreu um erro." />
         </>
-
     );
 }

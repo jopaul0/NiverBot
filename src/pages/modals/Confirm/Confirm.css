@@ -1,0 +1,9 @@
+.modal-confirm button{
+    max-width: 150px;
+    margin: 10px;
+}
+.modal-confirm div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

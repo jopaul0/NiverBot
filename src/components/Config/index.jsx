@@ -1,14 +1,16 @@
 import './Config.css'
 import Tabs from '../Tabs'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CredencialPage from '../../pages/config/Credencials';
 import SheetPage from '../../pages/config/Sheet';
 import MessagePage from '../../pages/config/Messages';
 import HelpPage from '../../pages/config/Help';
 import { ArrowLeft } from 'lucide-react';
+import { CSSTransition, SwitchTransition } from "react-transition-group"
 
 
 const Config = ({ visible, setVisible }) => {
+    const nodeRef = useRef(null);
     const [activeTabConfig, setActiveTabConfig] = useState('ajuda');
     const tabs = [
 
@@ -53,13 +55,23 @@ const Config = ({ visible, setVisible }) => {
                     onClick={() => {
                         setVisible(!visible);
                     }}>
-                    <ArrowLeft size={30} className=''/>
+                    <ArrowLeft size={30} className='' />
                 </button>
                 <Tabs activeTab={activeTabConfig} setActiveTab={setActiveTabConfig} tabs={tabs} id='config-tabs' />
             </div>
-            <div className='config-content'>
-                {renderContent()}
-            </div>
+            <SwitchTransition>
+                <CSSTransition
+                    key={activeTabConfig}
+                    timeout={300}
+                    classNames="fade"
+                    nodeRef={nodeRef}
+                    unmountOnExit
+                >
+                    <div ref={nodeRef} className="config-content">
+                        {renderContent()}
+                    </div>
+                </CSSTransition>
+            </SwitchTransition>
         </aside>
     );
 };
