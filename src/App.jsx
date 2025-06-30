@@ -17,7 +17,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("whatsapp");
   const [whatsappConnected, setWhatsappConnected] = useState(false);
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState(['Bem-Vindo ao OnTrigger!']);
   const [activity, setActivity] = useState(false);
   const [config, setConfig] = useState(false);
   const [activityTab, setActivityTab] = useState("birthday")
