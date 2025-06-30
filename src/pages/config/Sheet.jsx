@@ -1,6 +1,6 @@
 import Button from "../../components/Button";
 import InputText from "../../components/InputText";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ConfirmModal from "../modals/Confirm";
 import { ErrorModal, SuccessModal } from "../../components/Modal"
 
@@ -9,6 +9,13 @@ export default function SheetPage() {
     const [open, setOpen] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [currentId, setCurrentId] = useState('');
+
+    useEffect(() => {
+        window.electronAPI.getSheetId().then((id) => {
+            setCurrentId(id);
+        });
+    }, []);
 
     const handleSaveIdSheet = () => {
         setOpen(false);
@@ -19,6 +26,7 @@ export default function SheetPage() {
 
         window.electronAPI.saveSheetId(value);
         setSuccess(true);
+        setCurrentId(value);
     };
 
     return (
@@ -45,8 +53,12 @@ export default function SheetPage() {
                     <br />
                     <code>https://docs.google.com/spreadsheets/d/<strong>1AbcD1234EFgHijKLmNopQrStuVWxyz7890</strong>/edit#gid=0</code>
                 </p>
+
                 <p>
-                    Nesse caso, o trecho em negrito é o ID que deve ser inserido no campo abaixo:
+                    Nesse caso, o trecho em negrito é o ID.
+                </p>
+                <p style={{backgroundColor:'#1d424b', padding:'.5rem', borderRadius:'10px', margin:'20px 0', fontSize:'14px'}}>
+                    ID atual:<br /> <strong>{currentId || 'Nenhum ID definido'}</strong>
                 </p>
                 <form>
                     <InputText

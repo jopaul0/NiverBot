@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from "../src/functions/services/whatsapp.js";
 import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
 import { sendLog } from '../src/functions/utils/sendLog.js';
-import { dataDirectoryExists, updateSpreadsheetId } from '../src/functions/utils/data.js';
+import { dataDirectoryExists, updateSpreadsheetId, readJsonFile } from '../src/functions/utils/data.js';
 import fs from 'fs'
 
 
@@ -103,6 +103,16 @@ app.whenReady().then(() => {
 
     ipcMain.on('save-sheet-id', (event, sheetId) => {
         updateSpreadsheetId(mainWindow, sheetId);
+    });
+    ipcMain.handle('get-sheet-id', async () => {
+        try {
+            const json = await readJsonFile();
+            return json.googleSheets.spreadsheetId;
+        }
+        catch (error) {
+            sendLog(mainWindow, 'Erro ao ler config.json:', error);
+            return '';
+        }
     });
 });
 
