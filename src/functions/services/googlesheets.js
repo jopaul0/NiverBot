@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { BirthdayInMonth, isBirthday } from '../utils/date.js';
+import { BirthdayInMonth, isBirthday, BirthdayNear } from '../utils/date.js';
 import { sendLog } from '../utils/sendLog.js';
 import { readJsonFile } from '../utils/data.js';
 import { uniqueArray, firstName } from '../utils/format.js';
@@ -42,14 +42,14 @@ export async function findBirthdays(mainWindow) {
         const year = parseInt(info[2]);
 
         const birthday = new Date(year, month, day);
-        if (BirthdayInMonth(birthday)) {
+        if (BirthdayNear(birthday)) {
             birthdays.push({ name, birthday, phone });
         }
     });
 
     const unique = uniqueArray(birthdays);
 
-    sendLog(mainWindow, `🎉 Encontrados ${unique.length} aniversários no mês:`);
+    sendLog(mainWindow, `🎉 Encontrados ${unique.length} aniversários próximos`);
     unique.forEach(birthday => {
         sendLog(mainWindow, `🎂 ${firstName(birthday.name)} - ${birthday.birthday.toLocaleDateString()} - Telefone: ${birthday.phone}`);
     });

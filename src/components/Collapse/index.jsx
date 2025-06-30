@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react'; // só um ícone agora, animaremos ele
 import './Collapse.css';
 
 export default function Collapse({ title, children }) {
@@ -10,8 +10,15 @@ export default function Collapse({ title, children }) {
         <div className="collapse-container">
             <button className="collapse-header" onClick={() => setIsOpen(!isOpen)}>
                 <span>{title}</span>
-                {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                <motion.div
+                    animate={{ rotate: isOpen ? 90 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                >
+                    <ChevronRight size={18} />
+                </motion.div>
             </button>
+
             <AnimatePresence>
                 {isOpen && (
                     <motion.div

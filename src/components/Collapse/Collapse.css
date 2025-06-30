@@ -7,6 +7,10 @@
     width: 100%;
 }
 
+.collapse-container motion.div {
+  transform-origin: center;
+}
+
 .collapse-header {
     display: flex;
     justify-content: space-between;
