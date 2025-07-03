@@ -8,26 +8,33 @@ import {
 } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import DateRangePicker from '../../components/DateRangePicker/index.jsx';
+import { addDays, subDays } from 'date-fns';
 
 const BirthdayManual = () => {
     const [selected, setSelected] = useState([]);
     const [birthdays, setBirthdays] = useState([]);
-    const [range, setRange] = useState(null);
+    const today = new Date();
+    const initialRange = {
+        startDate: subDays(today, 7),
+        endDate: addDays(today, 7),
+        key: 'selection'
+    };
+    const [range, setRange] = useState(initialRange);
 
     useEffect(() => {
+        if (!range) return;
+
         const loadBirthdays = async () => {
             try {
-                const result = await window.electronAPI.getBirthdays();
-                console.log('Birthdays carregados:', result);
+                const result = await window.electronAPI.getBirthdays(range);
                 setBirthdays(Array.isArray(result) ? result : []);
             } catch (err) {
-                console.error('Erro ao carregar aniversários:', err);
                 setBirthdays([]);
             }
         };
 
         loadBirthdays();
-    }, []);
+    }, [range]);
 
     const toggleSelection = (person) => {
         setSelected(prev =>

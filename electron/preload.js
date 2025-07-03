@@ -8,7 +8,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   whatsappSendBirthdayMessage: () => ipcRenderer.invoke('whatsapp-send-birthday-message'),
   cancelWhatsappConnection: () => ipcRenderer.invoke('cancel-whatsapp-connection'),
   findBirthdays: () => ipcRenderer.invoke('find-birthdays'),
-  getBirthdays: () => ipcRenderer.invoke('get-birthdays'),
+  getBirthdays: (range) => ipcRenderer.invoke('get-birthdays', range),
   onLogMessage: (callback) => ipcRenderer.on('log-message', (event, message) => callback(message)),
   removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel),
   whatsappConnect: () => ipcRenderer.invoke('whatsapp-connect'),

@@ -1,0 +1,65 @@
+/* Cor da borda do primeiro e último dia */
+.rdrStartEdge,
+.rdrEndEdge {
+    background-color: #193941 !important;
+    color: #fff;
+    animation: fadeInAnimation 0.4s ease forwards;
+}
+
+.rdrInRange {
+    background-color: #204A53 !important;
+    color: #fff;
+    animation: fadeInAnimation 0.4s ease forwards;
+}
+
+.rdrDayInPreview,
+.rdrDayStartPreview,
+.rdrDayEndPreview,
+.rdrDayHovered {
+    color: #193941 !important;
+    animation: fadeInAnimation 0.3s ease forwards;
+}
+
+.rdrDay,
+.rdrDayNumber {
+    animation: fadeInAnimation 0.3s ease forwards;
+}
+
+.rdrCalendarWrapper button,
+.rdrCalendarWrapper select,
+.rdrCalendarWrapper select option {
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+.rdrCalendarWrapper::-webkit-scrollbar {
+    width: 4px;
+}
+
+.rdrCalendarWrapper::-webkit-scrollbar-track {
+    background: #ffffff00;
+}
+
+.rdrCalendarWrapper::-webkit-scrollbar-thumb {
+    background-color: #204A53;
+    border-radius: 10px;
+}
+
+.rdrCalendarWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #193941;
+}
+
+.rdrDayToday .rdrDayNumber span:after {
+    background: #193941;
+    bottom: 2px;
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

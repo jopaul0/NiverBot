@@ -75,22 +75,43 @@ export async function getBirthdayToday() {
     return uniqueArray(birthdays) || [];
 }
 
-export async function getBirthdays() {
+const parseDate = (d) => {
+    const date = new Date(d);
+    date.setHours(0, 0, 0, 0); // zera hora, minuto, segundo e milissegundo
+    return date;
+};
+
+export async function getBirthdays(range) {
     const rows = await getRows();
     const birthdays = [];
 
+    const start = range?.startDate ? new Date(range.startDate) : null;
+    const end = range?.endDate ? new Date(range.endDate) : null;
+
+    if (start) start.setHours(0, 0, 0, 0);
+    if (end) end.setHours(0, 0, 0, 0);
+
     rows.forEach(row => {
         const [company, name, date, phone, status] = row;
-        const info = date.split('/');
-        const day = parseInt(info[0]);
-        const month = parseInt(info[1]) - 1; // cuidado: mês começa do zero
-        const year = parseInt(info[2]);
 
-        const birthday = new Date(year, month, day);
-        const data = { name: name, date: birthday, phone: phone }
-        birthdays.push(data);
+        const [day, month, year] = date.split('/').map(Number);
+        const birthday = new Date(year, month - 1, day);
+        birthday.setHours(0, 0, 0, 0);
+
+        const isWithinRange =
+            (!start || birthday >= start) &&
+            (!end || birthday <= end);
+
+        if (isWithinRange) {
+            birthdays.push({ name, date: birthday, phone });
+        }
     });
+
     return uniqueObjArray(birthdays) || [];
 }
+
+
+
+
 
 

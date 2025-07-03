@@ -88,8 +88,8 @@ app.whenReady().then(() => {
         }
     });
 
-    ipcMain.handle('get-birthdays', async () => {
-        return await getBirthdays();
+    ipcMain.handle('get-birthdays', async (event, range) => {
+        return await getBirthdays(range);
     });
 
     dataDirectoryExists(mainWindow);
