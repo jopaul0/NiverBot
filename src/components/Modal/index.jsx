@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import './Modal.css';
+import '@/components/Modal/Modal.css';
 
 export const ModalBase = ({ isOpen, onClose, children, className = '' }) => {
     if (typeof document === 'undefined') return null;

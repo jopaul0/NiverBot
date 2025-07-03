@@ -1,8 +1,8 @@
-import Button from "../../components/Button";
-import InputText from "../../components/InputText";
+import Button from "@/components/Button";
+import InputText from "@/components/InputText";
 import { useState, useEffect } from 'react';
-import ConfirmModal from "../modals/Confirm";
-import { ErrorModal, SuccessModal } from "../../components/Modal"
+import ConfirmModal from "@/pages/modals/Confirm";
+import { ErrorModal, SuccessModal } from "@/components/Modal"
 
 export default function SheetPage() {
     const [value, setValue] = useState('');

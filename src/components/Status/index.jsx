@@ -1,4 +1,4 @@
-import './Status.css';
+import '@/components/Status/Status.css';
 
 const Status = ({active, loading}) => {
     return(

@@ -1,4 +1,4 @@
-import './Tabs.css';
+import '@/components/Tabs/Tabs.css';
 import { motion } from 'framer-motion';
 
 const Tabs = ({ activeTab, setActiveTab, tabs, id = 'default' }) => {

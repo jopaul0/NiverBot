@@ -1,11 +1,11 @@
 //Imports
 import { useState, useRef, useEffect } from "react"
-import "./App.css"
-import Config from "./components/Config"
-import Header from "./components/Header"
-import TabPage from "./components/TabPage"
-import Status from "./components/Status"
-import ActivityArea from "./components/ActivityArea"
+import "@/App.css"
+import Config from "@/components/Config"
+import Header from "@/components/Header"
+import TabPage from "@/components/TabPage"
+import Status from "@/components/Status"
+import ActivityArea from "@/components/ActivityArea"
 
 
 

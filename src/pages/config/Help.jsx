@@ -1,4 +1,4 @@
-import Collapse from "../../components/Collapse";
+import Collapse from "@/components/Collapse";
 
 export default function HelpPage() {
     const quetions = [

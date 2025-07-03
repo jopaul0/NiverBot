@@ -1,4 +1,4 @@
-import './TitleBar.css';
+import '@/components/Header/TitleBar/TitleBar.css';
 import { Minus, X, Settings } from 'lucide-react';
 
 const TitleBar = ({config, setConfig}) => {

@@ -1,9 +1,9 @@
 
 import { CSSTransition, SwitchTransition } from "react-transition-group"
-import BirthdayPage from "../../pages/tabs/Birthday"
-import WhatsappPage from "../../pages/tabs/Whatsapp"
-import DocumentsPage from "../../pages/tabs/Documents"
-import './TabPage.css';
+import BirthdayPage from "@/pages/tabs/Birthday"
+import WhatsappPage from "@/pages/tabs/Whatsapp"
+import DocumentsPage from "@/pages/tabs/Documents"
+import '@/components/TabPage/TabPage.css';
 
 const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsappConnected, loading, setLoading, activity, setActivityTab }) => {
     const renderContent = () => {

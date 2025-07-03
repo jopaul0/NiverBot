@@ -1,10 +1,10 @@
-import './Config.css'
-import Tabs from '../Tabs'
+import '@/components/Config/Config.css'
+import Tabs from '@/components/Tabs'
 import { useState, useEffect, useRef } from 'react';
-import CredencialPage from '../../pages/config/Credencials';
-import SheetPage from '../../pages/config/Sheet';
-import MessagePage from '../../pages/config/Messages';
-import HelpPage from '../../pages/config/Help';
+import CredencialPage from '@/pages/config/Credencials';
+import SheetPage from '@/pages/config/Sheet';
+import MessagePage from '@/pages/config/Messages';
+import HelpPage from '@/pages/config/Help';
 import { ArrowLeft } from 'lucide-react';
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 

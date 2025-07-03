@@ -1,6 +1,5 @@
-import './Activities.css';
-import { getBirthdayMessage } from '../../functions/utils/date.js'
-import Button from '../../components/Button'
+import '@/pages/activities/Activities.css';
+import Button from '@/components/Button'
 import { useState, useEffect } from 'react';
 import {
     VerticalTimeline,
@@ -11,6 +10,32 @@ import DateRangePicker from '../../components/DateRangePicker/index.jsx';
 import { addDays, subDays } from 'date-fns';
 import { X } from 'lucide-react';
 
+
+const getBirthdayMessage = (dateString) => {
+    const today = new Date();
+    const birthday = new Date(dateString);
+
+    // Cria uma nova data com o mesmo dia/mês, mas no ano atual
+    const currentYearBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
+
+    const diffTime = currentYearBirthday.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (isSameDay(today, currentYearBirthday)) {
+        return "Aniversário 🎉";
+    } else if (diffDays > 0) {
+        return `Em ${diffDays} dia${diffDays > 1 ? 's' : ''}`;
+    } else {
+        return `Há ${Math.abs(diffDays)} dia${Math.abs(diffDays) > 1 ? 's' : ''}`;
+    }
+}
+
+export function isSameDay(date1, date2) {
+    return (
+        date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth()
+    );
+}
 
 const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
     const [selected, setSelected] = useState([]);
@@ -64,7 +89,7 @@ const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
     return (
         <div className="activity-container">
             <p className='activity-label-float'>Selecione aniversariantes para enviar mensagens</p>
-            <button className='btn-close-activity' onClick={() => {setActivity(false)}}><X size={16} /></button>
+            <button className='btn-close-activity' onClick={() => { setActivity(false) }}><X size={16} /></button>
             <div className='activity-panel'>
                 <div className="custom-date-range">
                     <DateRangePicker className="data-range" onChange={setRange} />

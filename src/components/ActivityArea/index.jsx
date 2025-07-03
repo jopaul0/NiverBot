@@ -1,6 +1,6 @@
-import './ActivityArea.css';
-import Terminal from './Terminal';
-import ActivityActive from './ActivityActive';
+import '@/components/ActivityArea/ActivityArea.css';
+import Terminal from '@/components/ActivityArea/Terminal';
+import ActivityActive from '@/components/ActivityArea/ActivityActive';
 const ActivityArea = ({ logs, setLogs, setActivity, activity, activityTab, loading, setLoading, connected}) => {
     return (
         <section className='activity-area'>

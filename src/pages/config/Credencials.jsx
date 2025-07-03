@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Dropzone from "../../components/Dropzone";
-import Button from "../../components/Button";
-import { ErrorModal, SuccessModal } from "../../components/Modal"
+import Dropzone from "@/components/Dropzone";
+import Button from "@/components/Button";
+import { ErrorModal, SuccessModal } from "@/components/Modal"
 
 
 export default function CredencialPage() {

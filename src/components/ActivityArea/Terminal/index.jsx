@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import './Terminal.css';
+import '@/components/ActivityArea/Terminal/Terminal.css';
 import { Trash } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 

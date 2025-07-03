@@ -1,7 +1,7 @@
-import './Header.css';
-import Tabs from '../Tabs';
+import '@/components/Header/Header.css';
+import Tabs from '@/components/Tabs';
+import TitleBar from '@/components/Header/TitleBar';
 import logo from '../../../assets/iconelogo.png';
-import TitleBar from './TitleBar';
 
 const tabs = [
     { id: 'whatsapp', label: 'WhatsApp' },

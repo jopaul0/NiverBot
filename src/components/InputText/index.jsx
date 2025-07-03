@@ -1,4 +1,4 @@
-import './InputText.css';
+import '@/components/InputText/InputText.css';
 
 const InputText = ({ placeholder, value, onChange, type = 'text', name, background = '#295c69' }) => {
     return (

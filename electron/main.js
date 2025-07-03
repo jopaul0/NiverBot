@@ -1,16 +1,17 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import path from "path";
-import { fileURLToPath } from "url";
-import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from "../src/functions/services/whatsapp.js";
-import { findBirthdays, getBirthdayToday, getBirthdays } from '../src/functions/services/googlesheets.js';
-import { sendLog } from '../src/functions/utils/sendLog.js';
-import { dataDirectoryExists, updateSpreadsheetId, readJsonFile } from '../src/functions/utils/data.js';
-import fs from 'fs'
+import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
-
-
+// Resolver caminhos corretamente
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Importações absolutas a partir da raiz do projeto (via caminho relativo)
+import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from './services/whatsapp.js';
+import { findBirthdays, getBirthdayToday, getBirthdays } from './services/googlesheets.js';
+import { sendLog } from './utils/sendLog.js';
+import { dataDirectoryExists, updateSpreadsheetId, readJsonFile } from './utils/data.js';
 
 let mainWindow = null;
 
@@ -19,7 +20,7 @@ function createWindow() {
         width: 1000,
         height: 800,
         resizable: false,
-        frame: true,
+        frame: false,
         icon: path.join(__dirname, '..', 'assets', 'iconelogo.png'),
         title: 'OnTrigger',
         titleBarOverlay: {
@@ -33,9 +34,14 @@ function createWindow() {
         }
     });
 
-    const startUrl = process.env.ELECTRON_START_URL || 'http://localhost:5173';
-    mainWindow.loadURL(startUrl);
+    const isDev = !app.isPackaged;
 
+    if (isDev) {
+        mainWindow.loadURL('http://localhost:5173');
+        mainWindow.webContents.openDevTools();
+    } else {
+        mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    }
 }
 
 app.whenReady().then(() => {

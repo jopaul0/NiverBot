@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react'; // só um ícone agora, animaremos ele
-import './Collapse.css';
+import '@/components/Collapse/Collapse.css';
 
 export default function Collapse({ title, children }) {
     const [isOpen, setIsOpen] = useState(false);

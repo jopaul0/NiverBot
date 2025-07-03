@@ -1,6 +1,6 @@
-import BirthdayManual from '../../../pages/activities/Birthday';
-import DocumentsManual from '../../../pages/activities/Documents';
-import './ActivityActive.css';
+import BirthdayManual from '@/pages/activities/Birthday';
+import DocumentsManual from '@/pages/activities/Documents';
+import '@/components/ActivityArea/ActivityActive/ActivityActive.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const variants = {

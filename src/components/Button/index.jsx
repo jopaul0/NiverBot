@@ -1,4 +1,4 @@
-import './Button.css';
+import '@/components/Button/Button.css';
 
 const Button = ({ message, disable, onClick }) => {
 

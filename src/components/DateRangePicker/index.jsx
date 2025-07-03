@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import './DateRangePicker.css';
+import '@/components/DateRangePicker/DateRangePicker.css';
 
 export default function DateRangePicker({ onChange }) {
     const today = new Date();

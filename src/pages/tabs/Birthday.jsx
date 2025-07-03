@@ -1,4 +1,4 @@
-import Button from "../../components/Button";
+import Button from "@/components/Button";
 
 const BirthdayPage = ({ connected, loading, setLoading, setActivity, activity, setActivityTab }) => {
   // Função de busca de aniversários
