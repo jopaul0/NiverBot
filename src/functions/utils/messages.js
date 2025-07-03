@@ -1,9 +1,12 @@
 import Chance from "chance";
-import { readJsonFile } from "./data.js"
+import fs from 'fs';
+import path from 'path';
 export function getMessage(name) {
-    const config = readJsonFile(a);
-    const messages=config.whatsapp.messages;
+    const configPath = path.join(process.cwd(), 'data', 'config.json');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    console.log(config)
+    const messages = config.whatsapp.messages;
     const chance = new Chance();
     const randomIndex = chance.integer({ min: 0, max: messages.length - 1 });
-    return messages[randomIndex];
+    return messages[randomIndex].replace(/\$\{name\}/g, name);
 }

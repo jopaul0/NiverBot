@@ -26,15 +26,17 @@ const variants = {
     },
 };
 
-const ActivityActive = ({ activity, setActivity, activityTab }) => {
+const ActivityActive = ({ activity, setActivity, activityTab, loading, setLoading, connected }) => {
     const renderContent = () => {
-        switch(activityTab){
+        switch (activityTab) {
             case 'birthday':
-                return <BirthdayManual/>;
+                return <BirthdayManual loading={loading} setActivity={setActivity}
+                    setLoading={setLoading} connected={connected} />;
             case 'documents':
-                return <DocumentsManual/>;
+                return <DocumentsManual />;
             default:
-                return <BirthdayManual/>;
+                return <BirthdayManual loading={loading} setActivity={setActivity}
+                    setLoading={setLoading} connected={connected} />;
         }
     }
     return (

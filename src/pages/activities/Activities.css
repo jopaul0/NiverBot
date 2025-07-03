@@ -79,3 +79,17 @@
     display: none;
 }
 
+.btn-close-activity {
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    transition: all .3s ease;
+    color: #193941;
+    cursor: pointer;
+}
+
+.btn-close-activity:hover {
+    color: #204A53;
+}

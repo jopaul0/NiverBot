@@ -82,6 +82,9 @@ const App = () => {
           setActivity={setActivity}
           activity={activity}
           activityTab={activityTab}
+          loading={loading}
+          setLoading={setLoading}
+          connected={whatsappConnected}
         />
         <Status
           active={whatsappConnected}

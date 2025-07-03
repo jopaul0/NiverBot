@@ -33,8 +33,8 @@ const BirthdayPage = ({ connected, loading, setLoading, setActivity, activity, s
         <p>Busque os aniversariantes do dia!</p>
       </article>
       <Button message={"Consultar Aniversários"} disable={loading} onClick={handleFindBirthdays} />
-      <Button message={"Enviar Mensagem"} disable={!connected || loading} onClick={handleSendBirthdayMessage} />
-      <Button message={"Mensagem Manual"} onClick={() => {
+      <Button message={"Mensagem Automática"} disable={!connected || loading} onClick={handleSendBirthdayMessage} />
+      <Button message={"Mensagem Manual"} disable={!connected || loading} onClick={() => {
         setActivityTab('birthday');
         setActivity(!activity);
       }} />

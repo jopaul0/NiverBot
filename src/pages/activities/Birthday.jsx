@@ -9,8 +9,10 @@ import {
 import 'react-vertical-timeline-component/style.min.css';
 import DateRangePicker from '../../components/DateRangePicker/index.jsx';
 import { addDays, subDays } from 'date-fns';
+import { X } from 'lucide-react';
 
-const BirthdayManual = () => {
+
+const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
     const [selected, setSelected] = useState([]);
     const [birthdays, setBirthdays] = useState([]);
     const today = new Date();
@@ -47,21 +49,27 @@ const BirthdayManual = () => {
     const isSelected = (name) => selected.some(p => p.name === name);
 
 
-    const handleSend = () => {
-        selected.forEach(({ name, date, phone }) => {
-            console.log(`Enviar mensagem para ${name} (${phone}), aniversário em ${date}`);
-            // Aqui você pode fazer a lógica de envio
-        });
+    const handleSend = async () => {
+        setLoading(true);
+        try {
+            const response = await window.electronAPI.whatsappSendBirthdayManualMessage(selected);
+            console.log(response);
+        } catch (error) {
+            window.electronAPI.sendLog(`Erro ao enviar mensagem de aniversário: ${error.message || error}`);
+        }
+        setSelected([])
+        setLoading(false);
     };
 
     return (
         <div className="activity-container">
-            <p className='activity-label-float'>Selecione aniversariantes para enviar mensagem</p>
+            <p className='activity-label-float'>Selecione aniversariantes para enviar mensagens</p>
+            <button className='btn-close-activity' onClick={() => {setActivity(false)}}><X size={16} /></button>
             <div className='activity-panel'>
                 <div className="custom-date-range">
                     <DateRangePicker className="data-range" onChange={setRange} />
                 </div>
-                <Button message={`Enviar para ${selected.length} pessoa(s)`} disable={selected.length <= 0} onClick={handleSend} />
+                <Button message={`Enviar para ${selected.length} pessoa(s)`} disable={selected.length <= 0 || loading || !connected} onClick={handleSend} />
             </div>
             <div className="timeline-wrapper">
                 <VerticalTimeline>

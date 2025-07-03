@@ -68,8 +68,16 @@ app.whenReady().then(() => {
         cancelWhatsappConnection(BrowserWindow.getFocusedWindow());
     });
 
-    ipcMain.handle('whatsapp-send-birthday-message', async () => {
+    ipcMain.handle('whatsapp-send-birthday-message-automatic', async () => {
         const birthdays = await getBirthdayToday();
+        if (birthdays.length === 0) {
+            mainWindow.webContents.send('log-message', 'Nenhum aniversário encontrado para hoje.');
+            return;
+        }
+        await birthdayMessage(mainWindow, birthdays);
+    });
+
+    ipcMain.handle('whatsapp-send-birthday-message-manual', async (event, birthdays) => {
         if (birthdays.length === 0) {
             mainWindow.webContents.send('log-message', 'Nenhum aniversário encontrado para hoje.');
             return;
