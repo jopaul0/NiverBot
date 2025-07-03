@@ -7,10 +7,12 @@ import {
     VerticalTimelineElement
 } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import DateRangePicker from '../../components/DateRangePicker/index.jsx';
 
 const BirthdayManual = () => {
     const [selected, setSelected] = useState([]);
     const [birthdays, setBirthdays] = useState([]);
+    const [range, setRange] = useState(null);
 
     useEffect(() => {
         const loadBirthdays = async () => {
@@ -49,7 +51,9 @@ const BirthdayManual = () => {
         <div className="activity-container">
             <p className='activity-label-float'>Selecione aniversariantes para enviar mensagem</p>
             <div className='activity-panel'>
-                
+                <div className="custom-date-range">
+                    <DateRangePicker className="data-range" onChange={setRange} />
+                </div>
                 <Button message={`Enviar para ${selected.length} pessoa(s)`} disable={selected.length <= 0} onClick={handleSend} />
             </div>
             <div className="timeline-wrapper">

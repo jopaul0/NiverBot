@@ -3,7 +3,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    padding: 3rem;
+    padding: 2rem 0;
     gap: 1rem;
     position: relative;
 }
@@ -34,7 +34,6 @@
     content: '';
     position: absolute;
     left: 18px;
-    /* Ajuste conforme o layout */
     width: 4px;
     z-index: 0;
 }
@@ -50,11 +49,37 @@
     padding-right: 0.5rem;
 }
 
+.activity-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
 
 .activity-label-float {
     font-size: 13px;
     position: absolute;
     top: 0;
-    right: 0;
-    margin: 10px 40px;
+    right: 20%;
+    left: 20%;
+}
+
+/* src/styles/calendar.css */
+.custom-date-range .rdrCalendarWrapper {
+    width: 100% !important;
+    max-width: 300px;
+    font-size: 0.6rem;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.custom-date-range .rdrDateDisplayWrapper {
+    display: none;
+}
+
+.custom-date-range {
+    --rdrColorPrimary: #193941;
+    --rdrColorPrimaryDark: #193941;
 }
