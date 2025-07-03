@@ -2,7 +2,7 @@ import { google } from 'googleapis';
 import { BirthdayInMonth, isBirthday, BirthdayNear } from '../utils/date.js';
 import { sendLog } from '../utils/sendLog.js';
 import { readJsonFile } from '../utils/data.js';
-import { uniqueArray, firstName } from '../utils/format.js';
+import { uniqueArray, firstName, uniqueObjArray } from '../utils/format.js';
 
 
 async function getRows(mainWindow) {
@@ -73,6 +73,24 @@ export async function getBirthdayToday() {
     });
 
     return uniqueArray(birthdays) || [];
+}
+
+export async function getBirthdays() {
+    const rows = await getRows();
+    const birthdays = [];
+
+    rows.forEach(row => {
+        const [company, name, date, phone, status] = row;
+        const info = date.split('/');
+        const day = parseInt(info[0]);
+        const month = parseInt(info[1]) - 1; // cuidado: mês começa do zero
+        const year = parseInt(info[2]);
+
+        const birthday = new Date(year, month, day);
+        const data = { name: name, date: birthday, phone: phone }
+        birthdays.push(data);
+    });
+    return uniqueObjArray(birthdays) || [];
 }
 
 

@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from "../src/functions/services/whatsapp.js";
-import { findBirthdays, getBirthdayToday } from '../src/functions/services/googlesheets.js';
+import { findBirthdays, getBirthdayToday, getBirthdays } from '../src/functions/services/googlesheets.js';
 import { sendLog } from '../src/functions/utils/sendLog.js';
 import { dataDirectoryExists, updateSpreadsheetId, readJsonFile } from '../src/functions/utils/data.js';
 import fs from 'fs'
@@ -86,6 +86,10 @@ app.whenReady().then(() => {
         if (mainWindow && mainWindow.webContents) {
             mainWindow.webContents.send('log-message', message);
         }
+    });
+
+    ipcMain.handle('get-birthdays', async () => {
+        return await getBirthdays();
     });
 
     dataDirectoryExists(mainWindow);

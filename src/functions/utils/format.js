@@ -12,6 +12,18 @@ export function uniqueArray(array) {
   );
 }
 
+export function uniqueObjArray(arr) {
+    return arr.filter((obj, index, self) => {
+        if (!obj.date || !(obj.date instanceof Date)) return false;
+        return index === self.findIndex(o =>
+            o.name === obj.name &&
+            o.phone === obj.phone &&
+            o.date instanceof Date &&
+            o.date.getTime() === obj.date.getTime()
+        );
+    });
+}
+
 export function truncateFileName(name, maxLength = 30) {
     if (name.length <= maxLength) return name;
     const ext = name.split('.').pop();

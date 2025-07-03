@@ -11,7 +11,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group"
 
 const Config = ({ visible, setVisible }) => {
     const nodeRef = useRef(null);
-    const [activeTabConfig, setActiveTabConfig] = useState('ajuda');
+    const [activeTabConfig, setActiveTabConfig] = useState('credenciais');
     const tabs = [
 
         { id: 'credenciais', label: 'Credenciais' },
@@ -31,7 +31,7 @@ const Config = ({ visible, setVisible }) => {
             case "ajuda":
                 return <HelpPage />;
             default:
-                return <HelpPage />;
+                return <CredencialPage />;
         }
     }
 

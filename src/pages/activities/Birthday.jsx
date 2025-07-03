@@ -1,22 +1,31 @@
 import './Activities.css';
-import { getBirthdayMessage, isSameDay } from '../../functions/utils/date.js'
+import { getBirthdayMessage } from '../../functions/utils/date.js'
 import Button from '../../components/Button'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     VerticalTimeline,
     VerticalTimelineElement
 } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
-const birthdays = [
-    { name: "João", date: "2025-07-24", phone: "559999999999" },
-    { name: "Maria", date: "2025-06-25", phone: "558888888888" },
-    { name: "Carlos", date: "2025-06-26", phone: "557777777777" }
-];
-
-
 const BirthdayManual = () => {
     const [selected, setSelected] = useState([]);
+    const [birthdays, setBirthdays] = useState([]);
+
+    useEffect(() => {
+        const loadBirthdays = async () => {
+            try {
+                const result = await window.electronAPI.getBirthdays();
+                console.log('Birthdays carregados:', result);
+                setBirthdays(Array.isArray(result) ? result : []);
+            } catch (err) {
+                console.error('Erro ao carregar aniversários:', err);
+                setBirthdays([]);
+            }
+        };
+
+        loadBirthdays();
+    }, []);
 
     const toggleSelection = (person) => {
         setSelected(prev =>
@@ -40,10 +49,11 @@ const BirthdayManual = () => {
         <div className="activity-container">
             <p className='activity-label-float'>Selecione aniversariantes para enviar mensagem</p>
             <div className='activity-panel'>
+                
                 <Button message={`Enviar para ${selected.length} pessoa(s)`} disable={selected.length <= 0} onClick={handleSend} />
             </div>
             <div className="timeline-wrapper">
-                <VerticalTimeline layout="1-column">
+                <VerticalTimeline>
                     {birthdays.map((birthday, index) => {
                         const selectedStyle = isSelected(birthday.name)
                             ? {

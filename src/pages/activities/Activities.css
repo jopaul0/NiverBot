@@ -45,6 +45,7 @@
 
 .timeline-wrapper {
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: 100vh;
     padding-right: 0.5rem;
 }
