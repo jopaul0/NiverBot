@@ -1,10 +1,11 @@
+import { app } from 'electron';
 import { sendLog } from "./sendLog.js";
 import fs from 'fs';
 import path from "path";
 
 const defaultConfig = {
     appName: "OnTrigger",
-    version: "0.1.0",
+    version: "0.1.1",
     whatsapp: {
         "messages": [
             "🎉 Feliz aniversário, ${name}! 🎂\nDesejamos a você um novo ciclo cheio de saúde, sucesso e muitas conquistas. Que a prosperidade caminhe com você, e saiba que pode contar com a gente! ✨\nCom carinho, OnVale Contabilidade.",
@@ -16,7 +17,7 @@ const defaultConfig = {
     googleSheets: {
         spreadsheetId: "",
         range: "Página1!A2:E",
-        credentialsPath: "data/credenciais.json"
+        credentialsPath: "./credenciais.json"
     },
     ui: {
         theme: "light",
@@ -25,11 +26,10 @@ const defaultConfig = {
 };
 
 export const dataDirectoryExists = (mainWindow) => {
-    const dataPath = path.join(process.cwd(), 'data');
-
+    const dataPath = app.getPath('userData');
     if (!fs.existsSync(dataPath)) {
         fs.mkdirSync(dataPath, { recursive: true });
-        sendLog(mainWindow, '📁 Pasta "data" criada com sucesso.');
+        sendLog(mainWindow, '📁 Pasta "data" (userData) criada com sucesso.');
     }
 
     const configPath = path.join(dataPath, 'config.json');
@@ -39,11 +39,23 @@ export const dataDirectoryExists = (mainWindow) => {
         sendLog(mainWindow, '📝 Arquivo "config.json" criado com dados padrão.');
     }
 
+    const imageDestPath = path.join(dataPath, 'birthday.jpeg');
+    const imageSourcePath = path.join(process.resourcesPath, 'app.asar.unpacked', 'assets', 'birthday.jpeg');
+
+    if (!fs.existsSync(imageDestPath)) {
+        try {
+            fs.copyFileSync(imageSourcePath, imageDestPath);
+            sendLog(mainWindow, '🖼️ Imagem "birthday.jpeg" copiada para a pasta de dados.');
+        } catch (error) {
+            sendLog(mainWindow, `❌ Erro ao copiar imagem birthday.jpeg: ${error.message}`);
+        }
+    }
+
     return dataPath;
 };
 
 export async function readJsonFile(mainWindow) {
-    const filePath = path.join(process.cwd(), 'data', 'config.json');
+    const filePath = path.join(app.getPath('userData'), 'config.json');
 
     try {
         const data = await fs.promises.readFile(filePath, 'utf-8');
@@ -55,14 +67,15 @@ export async function readJsonFile(mainWindow) {
 }
 
 export function updateSpreadsheetId(mainWindow, newId) {
+    const configPath = path.join(app.getPath('userData'), 'config.json');
+
     try {
-        const configPath = path.join(process.cwd(), 'data', 'config.json');
         const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
         config.googleSheets.spreadsheetId = newId;
 
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
         sendLog(mainWindow, '✅ ID atualizado com sucesso!');
     } catch (err) {
-        sendLog(mainWindow, '❌ Erro ao atualizar config.json:', err.message);
+        sendLog(mainWindow, `❌ Erro ao atualizar config.json: ${err.message}`);
     }
 }

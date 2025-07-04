@@ -1,9 +1,10 @@
 import { google } from 'googleapis';
-import { BirthdayInMonth, isBirthday, BirthdayNear } from '../utils/date.js';
+import { isBirthday, BirthdayNear } from '../utils/date.js';
 import { sendLog } from '../utils/sendLog.js';
 import { readJsonFile } from '../utils/data.js';
 import { uniqueArray, firstName, uniqueObjArray } from '../utils/format.js';
-
+import { app } from 'electron';
+import path from 'path';
 
 async function getRows(mainWindow) {
     const config = await readJsonFile(mainWindow);
@@ -13,7 +14,7 @@ async function getRows(mainWindow) {
     }
 
     const auth = new google.auth.GoogleAuth({
-        keyFile: config.googleSheets.credentialsPath,
+        keyFile: path.join(app.getPath('userData'), config.googleSheets.credentialsPath),
         scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
     });
 

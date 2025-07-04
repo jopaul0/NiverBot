@@ -109,7 +109,7 @@ app.whenReady().then(() => {
     dataDirectoryExists(mainWindow);
 
     ipcMain.on('save-credentials', (event, jsonData) => {
-        const filePath = path.join(process.cwd(), 'data', 'credenciais.json');
+        const filePath = path.join(app.getPath('userData'), 'credenciais.json');
 
         try {
             fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2), 'utf-8');

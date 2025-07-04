@@ -1,23 +1,34 @@
 import pkg from 'whatsapp-web.js';
 import { sendLog } from '../utils/sendLog.js';
+import { app } from 'electron'; // ✅ IMPORTANTE!
 const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
 import { getMessage } from '../utils/messages.js';
+import puppeteer from 'puppeteer';
 
 let client = null;
 let cancelConnectionRequested = false;
 
 export async function connectWhatsapp(mainWindow) {
-
     if (client && client.info) {
         sendLog(mainWindow, '✅ Já está conectado');
         return;
     }
+
     cancelConnectionRequested = false;
+
     client = new Client({
-        authStrategy: new LocalAuth(),
+        authStrategy: new LocalAuth({
+            // ✅ armazena sessão em pasta segura
+            dataPath: path.join(app.getPath('userData'), '.wwebjs_auth')
+        }),
+        puppeteer: {
+            executablePath: puppeteer.executablePath(),
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
     });
 
     client.on('ready', () => {
@@ -46,7 +57,6 @@ export async function connectWhatsapp(mainWindow) {
     } catch (error) {
         sendLog(mainWindow, `❌ Erro ao inicializar o WhatsApp: ${error.message}`);
     }
-
 }
 
 export async function cancelWhatsappConnection(mainWindow) {
@@ -85,10 +95,11 @@ export async function birthdayMessage(mainWindow, birthdays) {
     }
 
     sendLog(mainWindow, `Enviando mensagens de aniversário para ${birthdays.length} contatos...`);
-    const media = MessageMedia.fromFilePath(path.join(process.cwd(), 'assets', 'birthday.jpeg'));
+    const mediaPath = path.join(app.getPath('userData'), 'birthday.jpeg'); // ✅ caminho seguro
+    const media = MessageMedia.fromFilePath(mediaPath);
 
     for (const birthday of birthdays) {
-        const rawNumber = birthday.phone.replace(/\D/g, ''); // remove qualquer caractere não numérico
+        const rawNumber = birthday.phone.replace(/\D/g, '');
         const firstName = birthday.name.split(" ")[0].toLowerCase();
         const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
 
@@ -108,9 +119,8 @@ export async function birthdayMessage(mainWindow, birthdays) {
     }
 }
 
-
 export function clearWhatsappSession(mainWindow) {
-    const sessionPath = path.join(process.cwd(), '.wwebjs_auth');
+    const sessionPath = path.join(app.getPath('userData'), '.wwebjs_auth'); // ✅ caminho certo
 
     try {
         if (fs.existsSync(sessionPath)) {
