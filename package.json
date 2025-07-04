@@ -1,6 +1,6 @@
 {
   "name": "ontrigger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "electron/main.js",
   "private": true,
@@ -12,17 +12,16 @@
   },
   "dependencies": {
     "chance": "^1.1.13",
+    "chrome-launcher": "^1.2.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.19.1",
     "googleapis": "^150.0.1",
     "lucide-react": "^0.518.0",
-    "puppeteer": "^24.11.2",
     "qrcode-terminal": "^0.12.0",
     "react": "^19.1.0",
     "react-date-range": "^2.0.1",
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
-    "react-transition-group": "^4.4.5",
     "react-vertical-timeline-component": "^3.5.3",
     "whatsapp-web.js": "^1.30.0"
   },
@@ -46,8 +45,7 @@
     "files": [
       "dist",
       "electron",
-      "assets",
-      "node_modules/puppeteer/.local-chromium/**/*"
+      "assets"
     ],
     "asar": true,
     "asarUnpack": [

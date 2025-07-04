@@ -1,15 +1,20 @@
 import pkg from 'whatsapp-web.js';
 import { sendLog } from '../utils/sendLog.js';
-import { app } from 'electron'; // ✅ IMPORTANTE!
+import { app } from 'electron';
 const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
 import { getMessage } from '../utils/messages.js';
-import puppeteer from 'puppeteer';
+import { Launcher } from 'chrome-launcher';
 
 let client = null;
 let cancelConnectionRequested = false;
+
+async function getChromePath() {
+    const installations = Launcher.getInstallations();
+    return installations.length > 0 ? installations[0] : null;
+}
 
 export async function connectWhatsapp(mainWindow) {
     if (client && client.info) {
@@ -19,13 +24,18 @@ export async function connectWhatsapp(mainWindow) {
 
     cancelConnectionRequested = false;
 
+    const chromePath = await getChromePath();
+    if (!chromePath) {
+        sendLog(mainWindow, '❌ Não foi possível localizar o Chrome/Chromium instalado.');
+        return;
+    }
+
     client = new Client({
         authStrategy: new LocalAuth({
-            // ✅ armazena sessão em pasta segura
             dataPath: path.join(app.getPath('userData'), '.wwebjs_auth')
         }),
         puppeteer: {
-            executablePath: puppeteer.executablePath(),
+            executablePath: chromePath,
             headless: true,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         },
@@ -46,10 +56,7 @@ export async function connectWhatsapp(mainWindow) {
         if (cancelConnectionRequested) return;
         mainWindow.webContents.send('whatsapp-qr', qr);
         sendLog(mainWindow, '📱 QR Code recebido, escaneie com seu celular');
-
-        qrcode.generate(qr, { small: true }, (qrAscii) => {
-            sendLog(mainWindow, qrAscii);
-        });
+        qrcode.generate(qr, { small: true }, qrAscii => sendLog(mainWindow, qrAscii));
     });
 
     try {
@@ -58,6 +65,7 @@ export async function connectWhatsapp(mainWindow) {
         sendLog(mainWindow, `❌ Erro ao inicializar o WhatsApp: ${error.message}`);
     }
 }
+
 
 export async function cancelWhatsappConnection(mainWindow) {
     if (client) {

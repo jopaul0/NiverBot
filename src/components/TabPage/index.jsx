@@ -1,11 +1,10 @@
-
-import { CSSTransition, SwitchTransition } from "react-transition-group"
-import BirthdayPage from "@/pages/tabs/Birthday"
-import WhatsappPage from "@/pages/tabs/Whatsapp"
-import DocumentsPage from "@/pages/tabs/Documents"
+import { AnimatePresence, motion } from "framer-motion";
+import BirthdayPage from "@/pages/tabs/Birthday";
+import WhatsappPage from "@/pages/tabs/Whatsapp";
+import DocumentsPage from "@/pages/tabs/Documents";
 import '@/components/TabPage/TabPage.css';
 
-const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsappConnected, loading, setLoading, activity, setActivityTab }) => {
+const TabPage = ({ activeTab, setActivity, whatsappConnected, setWhatsappConnected, loading, setLoading, activity, setActivityTab }) => {
     const renderContent = () => {
         switch (activeTab) {
             case "whatsapp":
@@ -42,23 +41,23 @@ const TabPage = ({ activeTab, nodeRef, setActivity, whatsappConnected, setWhatsa
                 />;
         }
     };
+
     return (
         <section className="tab-section">
-            <SwitchTransition>
-                <CSSTransition
+            <AnimatePresence mode="wait">
+                <motion.div
                     key={activeTab}
-                    timeout={300}
-                    classNames="fade"
-                    nodeRef={nodeRef}
-                    unmountOnExit
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.2 }}
+                    className="tab-page"
                 >
-                    <div ref={nodeRef} className="tab-page">
-                        {renderContent()}
-                    </div>
-                </CSSTransition>
-            </SwitchTransition>
+                    {renderContent()}
+                </motion.div>
+            </AnimatePresence>
         </section>
     );
-}
+};
 
 export default TabPage;
