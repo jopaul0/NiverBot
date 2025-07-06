@@ -27,6 +27,7 @@ export default function SheetPage() {
         window.electronAPI.saveSheetId(value);
         setSuccess(true);
         setCurrentId(value);
+        setValue('');
     };
 
     return (

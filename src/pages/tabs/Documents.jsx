@@ -6,12 +6,10 @@ const DocumentsPage = ({ connected, setConnected, setActivity, activity, setActi
         <h1>Documentos</h1>
         <p>Busque os documentos pendentes!</p>
       </article>
-      <Button message={"Documentos Pendentes"} />
-      <Button message={"Enviar Pedido"} />
-      <Button message={"Pedido Manual"}  onClick={() => {
+      <Button message={"Em Breve"} onClick={() => {
         setActivityTab('documents');
         setActivity(!activity);
-        }}/>
+      }} />
     </>
   );
 }

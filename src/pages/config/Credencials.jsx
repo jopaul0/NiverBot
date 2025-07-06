@@ -1,22 +1,29 @@
 import { useState } from "react";
 import Dropzone from "@/components/Dropzone";
 import Button from "@/components/Button";
-import { ErrorModal, SuccessModal } from "@/components/Modal"
-
+import { ErrorModal, SuccessModal } from "@/components/Modal";
+import ConfirmModal from '@/pages/modals/Confirm'
 
 export default function CredencialPage() {
     const [jsonData, setJsonData] = useState(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [resetKey, setResetKey] = useState(0); // ← novo
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setOpen(false);
 
         if (!jsonData) {
             setError(true);
             return;
         }
+
         window.electronAPI.saveCredentials(jsonData);
         setSuccess(true);
+        setJsonData(null);
+        setResetKey(prev => prev + 1); // ← força reset do Dropzone
     };
 
     return (
@@ -51,14 +58,22 @@ export default function CredencialPage() {
                     </p>
                     <p>Arraste o arquivo <code>credenciais.json</code> aqui ou clique para selecionar.</p>
 
-                    <form onSubmit={handleSubmit}>
-                        <Dropzone onFileRead={setJsonData} />
-                        <Button message="Enviar Arquivo" type="submit" />
+                    <form>
+                        <Dropzone onFileRead={setJsonData} resetTrigger={resetKey} />
+                        <Button message="Enviar Arquivo" onClick={(e) => {
+                            e.preventDefault();
+                            setOpen(true);
+                        }} />
                     </form>
                 </div>
             </div>
             <SuccessModal isOpen={success} onClose={() => setSuccess(false)} message="Arquivo enviado com sucesso!" />
             <ErrorModal isOpen={error} onClose={() => setError(false)} message="Ocorreu um erro." />
+            <ConfirmModal
+                isOpen={open}
+                onClose={() => setOpen(false)}
+                onClickFunction={handleSubmit}
+            />
         </>
     );
 }

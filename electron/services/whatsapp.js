@@ -6,14 +6,24 @@ import qrcode from 'qrcode-terminal';
 import fs from 'fs';
 import path from 'path';
 import { getMessage } from '../utils/messages.js';
-import { Launcher } from 'chrome-launcher';
+
 
 let client = null;
 let cancelConnectionRequested = false;
 
-async function getChromePath() {
-    const installations = Launcher.getInstallations();
-    return installations.length > 0 ? installations[0] : null;
+function getChromiumExecutablePath() {
+    const chromePaths = [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+        'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    ];
+
+    for (const p of chromePaths) {
+        if (fs.existsSync(p)) return p;
+    }
+
+    return null;
 }
 
 export async function connectWhatsapp(mainWindow) {
@@ -24,22 +34,16 @@ export async function connectWhatsapp(mainWindow) {
 
     cancelConnectionRequested = false;
 
-    const chromePath = await getChromePath();
-    if (!chromePath) {
-        sendLog(mainWindow, '❌ Não foi possível localizar o Chrome/Chromium instalado.');
-        return;
-    }
-
     client = new Client({
         authStrategy: new LocalAuth({
             dataPath: path.join(app.getPath('userData'), '.wwebjs_auth')
         }),
         puppeteer: {
-            executablePath: chromePath,
-            headless: true,
+            executablePath: getChromiumExecutablePath(),
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         },
     });
+
 
     client.on('ready', () => {
         mainWindow.webContents.send('whatsapp-status', true);

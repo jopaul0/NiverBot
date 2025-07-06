@@ -1,6 +1,9 @@
 import Button from "@/components/Button";
+import ConfirmModal from '@/pages/modals/Confirm'
+import { useState } from "react";
 
 const WhatsappPage = ({ connected, setConnected, loading, setLoading }) => {
+  const [open, setOpen] = useState(false);
   const handleConnect = async () => {
     setLoading(true);
     try {
@@ -23,6 +26,7 @@ const WhatsappPage = ({ connected, setConnected, loading, setLoading }) => {
   };
 
   const handleClearSession = async () => {
+    setOpen(false);
     try {
       await window.electronAPI.clearWhatsappSession();
     } catch (error) {
@@ -50,7 +54,12 @@ const WhatsappPage = ({ connected, setConnected, loading, setLoading }) => {
         ? handleCancelConnection
         : handleConnect} />
       <Button message={"Desconectar"} disable={!connected || loading} onClick={handleDisconnect} />
-      <Button message={"Limpar Sessão"} disable={connected || loading} onClick={handleClearSession} />
+      <Button message={"Limpar Sessão"} disable={connected || loading} onClick={() => { setOpen(true) }} />
+      <ConfirmModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onClickFunction={handleClearSession}
+      />
     </>
   );
 }

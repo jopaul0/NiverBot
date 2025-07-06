@@ -1,7 +1,7 @@
 const DocumentsManual = () => {
     return (
         <div>
-            Olé
+            Em Breve...
         </div>
     );
 }

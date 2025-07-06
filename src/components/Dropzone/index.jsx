@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import '@/components/Dropzone/Dropzone.css';
 
@@ -7,16 +7,32 @@ const truncateFileName = (name, maxLength = 30) => {
     const ext = name.split('.').pop();
     const base = name.substring(0, maxLength - ext.length - 5);
     return `${base}...${ext}`;
-}
+};
 
-const Dropzone = ({ onFileRead }) => {
+const Dropzone = ({ onFileRead, resetTrigger }) => {
     const [fileName, setFileName] = useState(null);
+    const inputRef = useRef();
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.value = null;
+        }
+        setFileName(null);
+    }, [resetTrigger]);
 
     const onDrop = useCallback((acceptedFiles) => {
-        const file = acceptedFiles[0];
-        if (!file) return;
+        if (inputRef.current) {
+            inputRef.current.value = null;
+        }
 
-        setFileName(file.name); // mostra o nome do arquivo
+        if (!acceptedFiles || acceptedFiles.length === 0) {
+            setFileName(null);
+            onFileRead(null);
+            return;
+        }
+
+        const file = acceptedFiles[0];
+        setFileName(file.name);
 
         const reader = new FileReader();
         reader.onload = () => {
@@ -41,7 +57,7 @@ const Dropzone = ({ onFileRead }) => {
 
     return (
         <div {...getRootProps({ className: 'dropzone' })}>
-            <input {...getInputProps()} />
+            <input ref={inputRef} {...getInputProps()} />
             {fileName ? (
                 <p>📄 {truncateFileName(fileName, 20)}</p>
             ) : (

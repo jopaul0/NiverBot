@@ -1,3 +1,3 @@
 export default function MessagePage () {
-    return(<h1>Oló</h1>);
+    return(<h1>Em Breve...</h1>);
 }

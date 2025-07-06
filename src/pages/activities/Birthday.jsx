@@ -9,15 +9,12 @@ import 'react-vertical-timeline-component/style.min.css';
 import DateRangePicker from '../../components/DateRangePicker/index.jsx';
 import { addDays, subDays } from 'date-fns';
 import { X } from 'lucide-react';
-
+import ConfirmModal from "@/pages/modals/Confirm";
 
 const getBirthdayMessage = (dateString) => {
     const today = new Date();
     const birthday = new Date(dateString);
-
-    // Cria uma nova data com o mesmo dia/mês, mas no ano atual
     const currentYearBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
-
     const diffTime = currentYearBirthday.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -38,6 +35,7 @@ export function isSameDay(date1, date2) {
 }
 
 const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
+    const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState([]);
     const [birthdays, setBirthdays] = useState([]);
     const today = new Date();
@@ -84,6 +82,8 @@ const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
         }
         setSelected([])
         setLoading(false);
+        setOpen(false);
+        setActivity(false);
     };
 
     return (
@@ -94,7 +94,7 @@ const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
                 <div className="custom-date-range">
                     <DateRangePicker className="data-range" onChange={setRange} />
                 </div>
-                <Button message={`Enviar para ${selected.length} pessoa(s)`} disable={selected.length <= 0 || loading || !connected} onClick={handleSend} />
+                <Button message={`Enviar para ${selected.length} pessoa(s)`} disable={selected.length <= 0 || loading || !connected} onClick={() => { setOpen(true) }} />
             </div>
             <div className="timeline-wrapper">
                 <VerticalTimeline>
@@ -140,6 +140,11 @@ const BirthdayManual = ({ loading, setLoading, connected, setActivity }) => {
                     })}
                 </VerticalTimeline>
             </div>
+            <ConfirmModal
+                isOpen={open}
+                onClose={() => setOpen(false)}
+                onClickFunction={handleSend}
+            />
         </div>
     );
 };
