@@ -1,7 +1,8 @@
 import '@/components/Header/TitleBar/TitleBar.css';
-import { Minus, X, Settings } from 'lucide-react';
+import { Minus, X, Settings, PartyPopper } from 'lucide-react';
 
-const TitleBar = ({config, setConfig}) => {
+
+const TitleBar = ({ config, setConfig }) => {
     const onMinimize = () => {
         window.electronAPI.minimize();
     };
@@ -10,7 +11,8 @@ const TitleBar = ({config, setConfig}) => {
     };
     return (
         <div className="title-bar">
-            <button onClick={() => {setConfig(!config)}}><Settings size={15}/></button>
+            <button onClick={() => { setConfig(!config) }}><PartyPopper size={15} /></button>
+            <button onClick={() => { setConfig(!config) }}><Settings size={15} /></button>
             <div className='window-buttons'>
                 <button onClick={onMinimize}><Minus size={15} /></button>
                 <button onClick={onClose}><X size={15} /></button>
