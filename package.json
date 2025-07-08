@@ -1,6 +1,21 @@
 {
   "name": "ontrigger",
-  "version": "0.1.2",
+  "version": "0.1.3",
+  "author": {
+    "name": "OnVale Contabilidade",
+    "email": "onvale.contabilidade@gmail.com",
+    "url": "https://www.onvale.com.br"
+  },
+  "contributors": [
+    {
+      "name": "João Santos",
+      "email": "jopaulo.as8@gmail.com"
+    },
+    {
+      "name": "Paulo Reis",
+      "email": ""
+    }
+  ],
   "type": "module",
   "main": "electron/main.js",
   "private": true,
