@@ -7,11 +7,15 @@ const defaultConfig = {
     appName: "OnTrigger",
     version: "0.1.1",
     whatsapp: {
-        "messages": [
-            "🎉 Feliz aniversário, ${name}! 🎂\nDesejamos a você um novo ciclo cheio de saúde, sucesso e muitas conquistas. Que a prosperidade caminhe com você, e saiba que pode contar com a gente! ✨\nCom carinho, OnVale Contabilidade.",
-            "🎉 ${name}, parabéns pelo seu dia! 🥳\nNós, da Onvale Contabilidade, desejamos um novo ciclo cheio de saúde, sucesso e realizações. Que a vida te surpreenda positivamente em cada etapa, e que possamos seguir juntos, contribuindo para o seu crescimento!✨\nFeliz aniversário! 🎂",
-            "🎉 ${name}, Hoje é dia de comemorar! 🎉\nA equipe da Onvale Contabilidade te deseja um aniversário incrível, cheio de alegrias, conquistas e motivos para sorrir. Que esse novo ciclo venha com ainda mais prosperidade. Conte com a gente nessa jornada!✨\nFelicidades! 🥳"
-        ],
+        "messages": {
+            lateBirthday: [],
+            birthday: [
+                "🎉 Feliz aniversário, ${name}! 🎂\nDesejamos a você um novo ciclo cheio de saúde, sucesso e muitas conquistas. Que a prosperidade caminhe com você, e saiba que pode contar com a gente! ✨\nCom carinho, OnVale Contabilidade.",
+                "🎉 ${name}, parabéns pelo seu dia! 🥳\nNós, da Onvale Contabilidade, desejamos um novo ciclo cheio de saúde, sucesso e realizações. Que a vida te surpreenda positivamente em cada etapa, e que possamos seguir juntos, contribuindo para o seu crescimento!✨\nFeliz aniversário! 🎂",
+                "🎉 ${name}, Hoje é dia de comemorar! 🎉\nA equipe da Onvale Contabilidade te deseja um aniversário incrível, cheio de alegrias, conquistas e motivos para sorrir. Que esse novo ciclo venha com ainda mais prosperidade. Conte com a gente nessa jornada!✨\nFelicidades! 🥳"
+            ],
+            earlyBirthday: []
+        },
         mediaPath: "birthday.jpeg"
     },
     googleSheets: {
@@ -77,5 +81,90 @@ export function updateSpreadsheetId(mainWindow, newId) {
         sendLog(mainWindow, '✅ ID atualizado com sucesso!');
     } catch (err) {
         sendLog(mainWindow, `❌ Erro ao atualizar config.json: ${err.message}`);
+    }
+}
+
+export function updateMessage(mainWindow, type, index, message) {
+    const configPath = path.join(app.getPath("userData"), "config.json");
+
+    try {
+        const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+
+        if (!config.whatsapp?.messages?.[type]) {
+            sendLog(mainWindow, `❌ Tipo de mensagem '${type}' não encontrado.`);
+            return;
+        }
+
+        if (index < 0 || index >= config.whatsapp.messages[type].length) {
+            sendLog(mainWindow, `❌ Índice inválido para o tipo '${type}'.`);
+            return;
+        }
+
+        config.whatsapp.messages[type][index] = message;
+
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2), "utf-8");
+        sendLog(mainWindow, "✅ Mensagem atualizada com sucesso!");
+    } catch (err) {
+        sendLog(mainWindow, `❌ Erro ao atualizar config.json: ${err.message}`);
+    }
+}
+
+export function addMessage(mainWindow, type, newMessage) {
+    const configPath = path.join(app.getPath("userData"), "config.json");
+
+    try {
+        const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+
+        if (!config.whatsapp?.messages?.[type]) {
+            sendLog(mainWindow, `❌ Tipo de mensagem '${type}' não encontrado.`);
+            return;
+        }
+        config.whatsapp.messages[type].push(newMessage);
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2), "utf-8");
+        sendLog(mainWindow, "✅ Nova mensagem adicionada com sucesso!");
+    } catch (err) {
+        sendLog(mainWindow, `❌ Erro ao adicionar mensagem: ${err.message}`);
+    }
+}
+
+export function deleteMessage(mainWindow, type, index) {
+    const configPath = path.join(app.getPath("userData"), "config.json");
+
+    try {
+        const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+
+        const messages = config.whatsapp?.messages?.[type];
+
+        if (!messages) {
+            sendLog(mainWindow, `❌ Tipo de mensagem '${type}' não encontrado.`);
+            return;
+        }
+
+        if (messages.length === 1) {
+            sendLog(mainWindow, `⚠️ Não é possível excluir a única mensagem do tipo '${type}'.`);
+            return;
+        }
+
+        if (index < 0 || index >= messages.length) {
+            sendLog(mainWindow, `❌ Índice inválido para o tipo '${type}'.`);
+            return;
+        }
+        const removed = messages.splice(index, 1);
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2), "utf-8");
+
+        sendLog(mainWindow, `✅ Mensagem removida com sucesso: "${removed[0].slice(0, 30)}..."`);
+    } catch (err) {
+        sendLog(mainWindow, `❌ Erro ao deletar mensagem: ${err.message}`);
+    }
+}
+
+export async function getAllMessages() {
+    const configPath = path.join(app.getPath("userData"), "config.json");
+    try {
+        const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+        const messages = config.whatsapp?.messages;
+        return messages;
+    } catch (err) {
+        sendLog(mainWindow, `❌ Erro ao ler mensagens: ${err.message}`);
     }
 }

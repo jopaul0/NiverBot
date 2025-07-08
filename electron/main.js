@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from './services/whatsapp.js';
 import { findBirthdays, getBirthdayToday, getBirthdays } from './services/googlesheets.js';
 import { sendLog } from './utils/sendLog.js';
-import { dataDirectoryExists, updateSpreadsheetId, readJsonFile } from './utils/data.js';
+import { dataDirectoryExists, updateSpreadsheetId, readJsonFile, getAllMessages } from './utils/data.js';
 
 let mainWindow = null;
 
@@ -108,6 +108,7 @@ app.whenReady().then(() => {
 
     dataDirectoryExists(mainWindow);
 
+    //JSON
     ipcMain.on('save-credentials', (event, jsonData) => {
         const filePath = path.join(app.getPath('userData'), 'credenciais.json');
 
@@ -122,6 +123,7 @@ app.whenReady().then(() => {
     ipcMain.on('save-sheet-id', (event, sheetId) => {
         updateSpreadsheetId(mainWindow, sheetId);
     });
+
     ipcMain.handle('get-sheet-id', async () => {
         try {
             const json = await readJsonFile();
@@ -132,6 +134,11 @@ app.whenReady().then(() => {
             return '';
         }
     });
+
+    ipcMain.handle('get-all-messages', async () => {
+        return await getAllMessages();
+    });
+
 });
 
 app.on('window-all-closed', () => {
