@@ -4,17 +4,23 @@ import fs from 'fs';
 import path from "path";
 
 const defaultConfig = {
-    appName: "OnTrigger",
-    version: "0.1.1",
     whatsapp: {
         "messages": {
-            lateBirthday: [],
+            lateBirthday: [
+                "🎉 Parabéns atrasado, ${name}! 🕒\nSabemos que a mensagem chegou um pouquinho depois, mas o carinho é o mesmo! Que seu novo ciclo seja repleto de saúde, realizações e prosperidade. ✨\nCom afeto, equipe OnVale Contabilidade.",
+                "🥳 Mesmo com um pequeno atraso, não poderíamos deixar de celebrar você, ${name}!\nDesejamos um novo ano cheio de vitórias, felicidade e crescimento pessoal e profissional. Que possamos continuar juntos nessa jornada! 🎂\nUm forte abraço da OnVale Contabilidade.",
+                "🎂 ${name}, o tempo passou, mas o desejo de felicidades permanece! ⏳\nParabéns atrasado! Que sua vida seja guiada por boas oportunidades, saúde e muita luz. Conte sempre com a gente! 💼\nAtenciosamente, OnVale Contabilidade."
+            ],
             birthday: [
                 "🎉 Feliz aniversário, ${name}! 🎂\nDesejamos a você um novo ciclo cheio de saúde, sucesso e muitas conquistas. Que a prosperidade caminhe com você, e saiba que pode contar com a gente! ✨\nCom carinho, OnVale Contabilidade.",
                 "🎉 ${name}, parabéns pelo seu dia! 🥳\nNós, da Onvale Contabilidade, desejamos um novo ciclo cheio de saúde, sucesso e realizações. Que a vida te surpreenda positivamente em cada etapa, e que possamos seguir juntos, contribuindo para o seu crescimento!✨\nFeliz aniversário! 🎂",
                 "🎉 ${name}, Hoje é dia de comemorar! 🎉\nA equipe da Onvale Contabilidade te deseja um aniversário incrível, cheio de alegrias, conquistas e motivos para sorrir. Que esse novo ciclo venha com ainda mais prosperidade. Conte com a gente nessa jornada!✨\nFelicidades! 🥳"
             ],
-            earlyBirthday: []
+            earlyBirthday: [
+                "🎉 Antecipando as comemorações, ${name}? 😄\nJá queremos te desejar um aniversário incrível, cheio de saúde, alegria e muito sucesso. Que seu novo ciclo traga ainda mais conquistas!✨\nCom carinho, OnVale Contabilidade.",
+                "🥳 Está chegando o grande dia, ${name}!\nDesde já, desejamos que seu aniversário seja especial e que o novo ano venha cheio de oportunidades, crescimento e felicidades. 🎂\nConte conosco sempre! — OnVale Contabilidade.",
+                "🎂 Faltam poucos dias, ${name}, mas a gente não quis esperar! 🎈\nDesejamos desde já um feliz aniversário cheio de motivos para sorrir e prosperar. Que sua caminhada seja sempre iluminada! ✨\nEquipe OnVale Contabilidade."
+            ]
         },
         mediaPath: "birthday.jpeg"
     },
@@ -22,10 +28,6 @@ const defaultConfig = {
         spreadsheetId: "",
         range: "Página1!A2:E",
         credentialsPath: "./credenciais.json"
-    },
-    ui: {
-        theme: "light",
-        language: "pt-BR"
     }
 };
 
@@ -109,7 +111,7 @@ export function updateMessage(mainWindow, type, index, message) {
     }
 }
 
-export function addMessage(mainWindow, type, newMessage) {
+export function addMessage(mainWindow, type, newMessage = 'Clique aqui para editar essa mensagem!') {
     const configPath = path.join(app.getPath("userData"), "config.json");
 
     try {

@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
   saveCredentials: (jsonData) => ipcRenderer.send("save-credentials", jsonData),
   saveSheetId: (sheetId) => ipcRenderer.send('save-sheet-id', sheetId),
+  addMessage: (type) => ipcRenderer.send('add-message', type),
   minimize: () => ipcRenderer.send('window-minimize'),
   close: () => ipcRenderer.send('window-close'),
   whatsappSendBirthdayMessage: () => ipcRenderer.invoke('whatsapp-send-birthday-message-automatic'),
