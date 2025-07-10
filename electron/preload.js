@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   whatsappSendBirthdayManualMessage: (selected) => ipcRenderer.invoke('whatsapp-send-birthday-message-manual', selected),
   cancelWhatsappConnection: () => ipcRenderer.invoke('cancel-whatsapp-connection'),
   findBirthdays: () => ipcRenderer.invoke('find-birthdays'),
+  findBirthdaysToday: () => ipcRenderer.invoke('find-birthdays-today'),
   getBirthdays: (range) => ipcRenderer.invoke('get-birthdays', range),
   onLogMessage: (callback) => ipcRenderer.on('log-message', (event, message) => callback(message)),
   removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel),

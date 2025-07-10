@@ -6,6 +6,7 @@ import Header from "@/components/Header"
 import TabPage from "@/components/TabPage"
 import Status from "@/components/Status"
 import ActivityArea from "@/components/ActivityArea"
+import ModalNotice from "@/pages/modals/Notice"
 
 
 
@@ -21,6 +22,8 @@ const App = () => {
   const [activity, setActivity] = useState(false);
   const [config, setConfig] = useState(false);
   const [activityTab, setActivityTab] = useState("birthday")
+  const [open, setOpen] = useState(true);
+  const [names, setNames] = useState([]);
 
   //Effects 
   useEffect(() => {
@@ -36,6 +39,28 @@ const App = () => {
       window.electronAPI.removeAllListeners('whatsapp-status');
     };
   }, []);
+
+  useEffect(() => {
+    const fetchBirthdayNames = async () => {
+      try {
+        const result = await window.electronAPI.findBirthdaysToday();
+
+        if (Array.isArray(result)) {
+          const extractedNames = result.map(person => person.name);
+          setNames(extractedNames);
+        } else {
+          console.warn('Resultado inesperado:', result);
+          setNames([]);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar aniversariantes:', error);
+        setNames([]);
+      }
+    };
+
+    fetchBirthdayNames();
+  }, []);
+
 
   useEffect(() => {
     const handleLog = (msg) => {
@@ -58,6 +83,8 @@ const App = () => {
         setActiveTab={setActiveTab}
         config={config}
         setConfig={setConfig}
+        openNotice={open}
+        setOpenNotice={setOpen}
       />
       <Config
         visible={config}
@@ -91,6 +118,7 @@ const App = () => {
           loading={loading}
         />
       </main>
+      <ModalNotice isOpen={open} onClose={() => { setOpen(false) }} names={names} />
     </>
   )
 }

@@ -56,6 +56,26 @@ export async function findBirthdays(mainWindow) {
     });
 }
 
+export async function findBirthdaysToday(mainWindow) {
+    const rows = await getRows();
+    const birthdays = [];
+
+    rows.forEach(row => {
+        const [company, name, date, phone, status] = row;
+        const info = date.split('/');
+        const day = parseInt(info[0]);
+        const month = parseInt(info[1]) - 1; // cuidado: mês começa do zero
+        const year = parseInt(info[2]);
+
+        const birthday = new Date(year, month, day);
+        if (isBirthday(birthday)) {
+            birthdays.push({ name, birthday, phone });
+        }
+    });
+
+    return uniqueArray(birthdays);
+}
+
 
 
 const parseDate = (d) => {

@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 // Importações absolutas a partir da raiz do projeto (via caminho relativo)
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from './services/whatsapp.js';
-import { findBirthdays, getBirthdayToday, getBirthdays } from './services/googlesheets.js';
+import { findBirthdays, getBirthdayToday, getBirthdays, findBirthdaysToday } from './services/googlesheets.js';
 import { sendLog } from './utils/sendLog.js';
 import { dataDirectoryExists, updateSpreadsheetId, readJsonFile, getAllMessages, addMessage, deleteMessage, updateMessage } from './utils/data.js';
 
@@ -94,6 +94,9 @@ app.whenReady().then(() => {
     // Handle Googhle Sheets connection
     ipcMain.handle('find-birthdays', async () => {
         await findBirthdays(mainWindow);
+    });
+    ipcMain.handle('find-birthdays-today', async () => {
+        return await findBirthdaysToday(mainWindow);
     });
 
     ipcMain.on('send-log', (event, message) => {

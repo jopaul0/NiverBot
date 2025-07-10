@@ -9,12 +9,13 @@ const tabs = [
     { id: 'documents', label: 'Documentos' }
 ];
 
-const Header = ({ activeTab, setActiveTab, config, setConfig }) => {
+const Header = ({ activeTab, setActiveTab, config, setConfig, openNotice,
+    setOpenNotice }) => {
     return (
         <>
 
             <header className="header">
-                <TitleBar config={config} setConfig={setConfig}/>
+                <TitleBar config={config} setConfig={setConfig} openNotice={openNotice} setOpenNotice={setOpenNotice} />
                 <div className="header-content">
                     <div className='logo-content'>
                         <img
@@ -25,7 +26,7 @@ const Header = ({ activeTab, setActiveTab, config, setConfig }) => {
                         <h1>OnTrigger</h1>
                     </div>
 
-                    <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs}/>
+                    <Tabs activeTab={activeTab} setActiveTab={setActiveTab} tabs={tabs} />
                 </div>
             </header>
         </>
