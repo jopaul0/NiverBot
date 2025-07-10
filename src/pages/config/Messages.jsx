@@ -15,6 +15,12 @@ export default function MessagePage() {
         fetchMessages();
     }, []);
 
+    const handleAddMessage = async (keyArray) => {
+        await window.electronAPI.addMessage(keyArray);
+        const updatedMessages = await window.electronAPI.getAllMessages();
+        setMessages(updatedMessages);
+    };
+
     return (
         <div className='page-content'>
             <div className='left' style={{ overflowY: 'auto' }}>
@@ -24,7 +30,7 @@ export default function MessagePage() {
                     selectedMessage={selectedMessage}
                     onSelect={setSelectedMessage}
                     keyArray='birthday'
-                    setMessages={setMessages}
+                    handleAddMessage={handleAddMessage}
                 />
                 <List
                     listName='Adiantado'
@@ -32,7 +38,7 @@ export default function MessagePage() {
                     selectedMessage={selectedMessage}
                     onSelect={setSelectedMessage}
                     keyArray='earlyBirthday'
-                    setMessages={setMessages}
+                    handleAddMessage={handleAddMessage}
                 />
                 <List
                     listName='Atrasado'
@@ -40,7 +46,7 @@ export default function MessagePage() {
                     selectedMessage={selectedMessage}
                     onSelect={setSelectedMessage}
                     keyArray='lateBirthday'
-                    setMessages={setMessages}
+                    handleAddMessage={handleAddMessage}
                 />
 
             </div>

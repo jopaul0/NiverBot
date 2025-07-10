@@ -123,7 +123,7 @@ export async function birthdayMessage(mainWindow, birthdays) {
             }
 
             await client.sendMessage(numberId._serialized, media);
-            await client.sendMessage(numberId._serialized, getMessage(formattedName));
+            await client.sendMessage(numberId._serialized, getMessage(formattedName, birthday.date));
             sendLog(mainWindow, `✅ Mensagem enviada para ${formattedName}`);
         } catch (error) {
             sendLog(mainWindow, `❌ Erro ao enviar para ${formattedName}: ${error.message || error}`);

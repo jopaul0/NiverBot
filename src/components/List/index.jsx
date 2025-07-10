@@ -8,16 +8,8 @@ export default function List({
     onSelect,
     selectedMessage,
     keyArray,
-    setMessages
+    handleAddMessage
 }) {
-
-    const handleAddMessage = async (keyArray) => {
-        await window.electronAPI.addMessage(keyArray);
-        const updatedMessages = await window.electronAPI.getAllMessages();
-        setMessages(updatedMessages);
-    };
-
-
 
     return (
         <div className="list-container">
