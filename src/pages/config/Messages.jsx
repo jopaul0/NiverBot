@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import List from '@/components/List';
-import { Check, Trash2 } from 'lucide-react';
+import { Check, Trash2, Image } from 'lucide-react';
 import { ConfirmDeleteModal, ConfirmEditModal } from '@/pages/modals/Confirm';
 
 export default function MessagePage() {
@@ -92,37 +92,64 @@ export default function MessagePage() {
                         />
                     </div>
                     <div className="border-message-box footer">
-                        <button
-                            onClick={() => { setOpenEdit(true) }}
-                            disabled={!selectedMessage}
-                            style={{
-                                backgroundColor: selectedMessage ? '#28a745' : '#3a3939',
-                                color: 'white',
-                                padding: '0.5rem 1rem',
-                                border: 'none',
-                                borderRadius: '6px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                cursor: selectedMessage ? 'pointer' : 'not-allowed',
-                                transition: 'background-color 0.2s'
-                            }}
-                            onMouseOver={(e) => {
-                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#218838';
-                            }}
-                            onMouseOut={(e) => {
-                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#28a745';
-                            }}
-                        >
-                            <Check size={18} />
-                            Salvar
-                        </button>
+                        <div style={{ display: 'flex' }}>
+                            <button
+                                onClick={() => { setOpenEdit(true) }}
+                                disabled={!selectedMessage}
+                                style={{
+                                    backgroundColor: selectedMessage ? '#28a745' : '#3a3939',
+                                    color: 'white',
+                                    padding: '0.5rem 1rem',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    cursor: selectedMessage ? 'pointer' : 'not-allowed',
+                                    transition: 'background-color 0.2s'
+                                }}
+                                onMouseOver={(e) => {
+                                    if (selectedMessage) e.currentTarget.style.backgroundColor = '#218838';
+                                }}
+                                onMouseOut={(e) => {
+                                    if (selectedMessage) e.currentTarget.style.backgroundColor = '#28a745';
+                                }}
+                            >
+                                <Check size={18} />
+                                Salvar
+                            </button>
 
+                            <button
+                                onClick={() => { setOpenDel(true) }}
+                                disabled={!selectedMessage}
+                                style={{
+                                    backgroundColor: selectedMessage ? '#dc3545' : '#3a3939',
+                                    color: 'white',
+                                    padding: '0.5rem 1rem',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    cursor: selectedMessage ? 'pointer' : 'not-allowed',
+                                    transition: 'background-color 0.2s',
+                                    marginLeft: '1rem'
+                                }}
+                                onMouseOver={(e) => {
+                                    if (selectedMessage) e.currentTarget.style.backgroundColor = '#c82333';
+                                }}
+                                onMouseOut={(e) => {
+                                    if (selectedMessage) e.currentTarget.style.backgroundColor = '#dc3545';
+                                }}
+                            >
+                                <Trash2 size={18} />
+                                Excluir
+                            </button>
+                        </div>
                         <button
-                            onClick={() => { setOpenDel(true) }}
-                            disabled={!selectedMessage}
+                            onClick={() => { /* sua função aqui */ }}
                             style={{
-                                backgroundColor: selectedMessage ? '#dc3545' : '#3a3939',
+                                backgroundColor: '#007bff', // azul como cor padrão para botão de mídia
                                 color: 'white',
                                 padding: '0.5rem 1rem',
                                 border: 'none',
@@ -130,19 +157,19 @@ export default function MessagePage() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '0.5rem',
-                                cursor: selectedMessage ? 'pointer' : 'not-allowed',
+                                cursor: 'pointer',
                                 transition: 'background-color 0.2s',
                                 marginLeft: '1rem'
                             }}
                             onMouseOver={(e) => {
-                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#c82333';
+                                e.currentTarget.style.backgroundColor = '#0069d9';
                             }}
                             onMouseOut={(e) => {
-                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#dc3545';
+                                e.currentTarget.style.backgroundColor = '#007bff';
                             }}
                         >
-                            <Trash2 size={18} />
-                            Excluir
+                            <Image size={18} />
+                            Imagem
                         </button>
                     </div>
 
