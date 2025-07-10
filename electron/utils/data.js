@@ -114,23 +114,26 @@ export function updateSpreadsheetId(mainWindow, newId) {
     }
 }
 
-export function updateMessage(mainWindow, type, index, message) {
+export function updateMessage(mainWindow, type, id, newText) {
     const configPath = path.join(app.getPath("userData"), "config.json");
 
     try {
         const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 
-        if (!config.whatsapp?.messages?.[type]) {
+        const messages = config.whatsapp?.messages?.[type];
+        if (!messages) {
             sendLog(mainWindow, `❌ Tipo de mensagem '${type}' não encontrado.`);
             return;
         }
 
-        if (index < 0 || index >= config.whatsapp.messages[type].length) {
-            sendLog(mainWindow, `❌ Índice inválido para o tipo '${type}'.`);
+        const index = messages.findIndex(msg => msg.id === id);
+        if (index === -1) {
+            sendLog(mainWindow, `❌ Mensagem com ID '${id}' não encontrada no tipo '${type}'.`);
             return;
         }
 
-        config.whatsapp.messages[type][index] = message;
+        // Atualiza apenas o texto mantendo o mesmo ID
+        config.whatsapp.messages[type][index].text = newText;
 
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2), "utf-8");
         sendLog(mainWindow, "✅ Mensagem atualizada com sucesso!");
@@ -138,6 +141,7 @@ export function updateMessage(mainWindow, type, index, message) {
         sendLog(mainWindow, `❌ Erro ao atualizar config.json: ${err.message}`);
     }
 }
+
 
 export function addMessage(mainWindow, type, newMessage = 'Clique aqui para editar essa mensagem!') {
     const configPath = path.join(app.getPath("userData"), "config.json");

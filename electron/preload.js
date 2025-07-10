@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   saveSheetId: (sheetId) => ipcRenderer.send('save-sheet-id', sheetId),
   addMessage: (type) => ipcRenderer.send('add-message', type),
   deleteMessage: (type, id) => ipcRenderer.send('delete-message', type, id),
+  updateMessage: (type, id, text) => ipcRenderer.send('update-message', type, id, text),
   minimize: () => ipcRenderer.send('window-minimize'),
   close: () => ipcRenderer.send('window-close'),
   whatsappSendBirthdayMessage: () => ipcRenderer.invoke('whatsapp-send-birthday-message-automatic'),

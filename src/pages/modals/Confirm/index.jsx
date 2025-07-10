@@ -28,3 +28,15 @@ export function ConfirmDeleteModal({ onDelete, onClose, isOpen }) {
         </ModalBase>
     );
 }
+
+export function ConfirmEditModal({ onEdit, onClose, isOpen }) {
+    return (
+        <ModalBase isOpen={isOpen} onClose={onClose} className='modal-confirm'>
+            <h2>✏️ Confirmar Edição</h2>
+            <p>Tem certeza que deseja salvar as alterações desta mensagem?</p>
+            <div>
+                <Button message={'Salvar'} onClick={onEdit} />
+            </div>
+        </ModalBase>
+    );
+}

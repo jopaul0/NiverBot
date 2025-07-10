@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import List from '@/components/List';
 import { Check, Trash2 } from 'lucide-react';
-import { ConfirmDeleteModal } from '@/pages/modals/Confirm';
+import { ConfirmDeleteModal, ConfirmEditModal } from '@/pages/modals/Confirm';
 
 export default function MessagePage() {
     const [messages, setMessages] = useState({});
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [openDel, setOpenDel] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const [editedText, setEditedText] = useState('');
 
     useEffect(() => {
@@ -31,12 +32,10 @@ export default function MessagePage() {
 
     const handleSave = async () => {
         if (selectedMessage && editedText) {
-            await window.electronAPI.updateMessage(selectedMessage.id, editedText);
+            await window.electronAPI.updateMessage(selectedMessage.type, selectedMessage.id, editedText);
             const updatedMessages = await window.electronAPI.getAllMessages();
             setMessages(updatedMessages);
-            const updated = updatedMessages[selectedMessage.type]?.find(msg => msg.id === selectedMessage.id);
-            setSelectedMessage(updated || null);
-            setEditedText(updated?.text || '');
+            setOpenEdit(false);
         }
     };
 
@@ -94,7 +93,7 @@ export default function MessagePage() {
                     </div>
                     <div className="border-message-box footer">
                         <button
-                            onClick={handleSave}
+                            onClick={() => { setOpenEdit(true) }}
                             disabled={!selectedMessage}
                             style={{
                                 backgroundColor: selectedMessage ? '#28a745' : '#3a3939',
@@ -151,6 +150,7 @@ export default function MessagePage() {
 
             </div>
             <ConfirmDeleteModal onClose={() => { setOpenDel(false) }} isOpen={openDel} onDelete={handleDelete} />
+            <ConfirmEditModal onClose={() => { setOpenEdit(false) }} isOpen={openEdit} onEdit={handleSave} />
         </div>
     );
 }
