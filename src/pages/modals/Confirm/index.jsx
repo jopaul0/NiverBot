@@ -11,8 +11,20 @@ export default function ConfirmModal({ onClickFunction, onClose, isOpen }) {
                 Você tem certeza que deseja realizar essa operação?
             </p>
             <div>
-                <Button message={'Realizar'} onClick={onClickFunction}/>
+                <Button message={'Realizar'} onClick={onClickFunction} />
             </div>
         </ModalBase>
     )
+}
+
+export function ConfirmDeleteModal({ onDelete, onClose, isOpen }) {
+    return (
+        <ModalBase isOpen={isOpen} onClose={onClose} className='modal-confirm'>
+            <h2>🗑 Confirmar Exclusão</h2>
+            <p>Tem certeza que deseja deletar este elemento?</p>
+            <div>
+                <Button message={'Deletar'} onClick={onDelete} />
+            </div>
+        </ModalBase>
+    );
 }

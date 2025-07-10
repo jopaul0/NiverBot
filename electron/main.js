@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from './services/whatsapp.js';
 import { findBirthdays, getBirthdayToday, getBirthdays } from './services/googlesheets.js';
 import { sendLog } from './utils/sendLog.js';
-import { dataDirectoryExists, updateSpreadsheetId, readJsonFile, getAllMessages, addMessage } from './utils/data.js';
+import { dataDirectoryExists, updateSpreadsheetId, readJsonFile, getAllMessages, addMessage, deleteMessage } from './utils/data.js';
 
 let mainWindow = null;
 
@@ -139,8 +139,13 @@ app.whenReady().then(() => {
         return await getAllMessages();
     });
 
+
     ipcMain.on('add-message', (event, type) => {
         addMessage(mainWindow, type);
+    });
+
+    ipcMain.on('delete-message', (event, type, id) => {
+        deleteMessage(mainWindow, type, id);
     });
 
 });

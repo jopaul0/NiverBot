@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import List from '@/components/List';
-
+import { Check, Trash2 } from 'lucide-react';
+import { ConfirmDeleteModal } from '@/pages/modals/Confirm';
 
 export default function MessagePage() {
-    const [messages, setMessages] = useState('');
+    const [messages, setMessages] = useState({});
     const [selectedMessage, setSelectedMessage] = useState(null);
+    const [openDel, setOpenDel] = useState(false);
+    const [editedText, setEditedText] = useState('');
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -21,6 +24,33 @@ export default function MessagePage() {
         setMessages(updatedMessages);
     };
 
+    const handleSelectMessage = (message) => {
+        setSelectedMessage(message);
+        setEditedText(message?.text || '');
+    };
+
+    const handleSave = async () => {
+        if (selectedMessage && editedText) {
+            await window.electronAPI.updateMessage(selectedMessage.id, editedText);
+            const updatedMessages = await window.electronAPI.getAllMessages();
+            setMessages(updatedMessages);
+            const updated = updatedMessages[selectedMessage.type]?.find(msg => msg.id === selectedMessage.id);
+            setSelectedMessage(updated || null);
+            setEditedText(updated?.text || '');
+        }
+    };
+
+    const handleDelete = async () => {
+        if (selectedMessage) {
+            await window.electronAPI.deleteMessage(selectedMessage.type, selectedMessage.id);
+            const updatedMessages = await window.electronAPI.getAllMessages();
+            setMessages(updatedMessages);
+            setSelectedMessage(null);
+            setEditedText('');
+            setOpenDel(false);
+        }
+    };
+
     return (
         <div className='page-content'>
             <div className='left' style={{ overflowY: 'auto' }}>
@@ -28,7 +58,7 @@ export default function MessagePage() {
                     listName='Aniversário'
                     list={messages.birthday}
                     selectedMessage={selectedMessage}
-                    onSelect={setSelectedMessage}
+                    onSelect={handleSelectMessage}
                     keyArray='birthday'
                     handleAddMessage={handleAddMessage}
                 />
@@ -36,7 +66,7 @@ export default function MessagePage() {
                     listName='Adiantado'
                     list={messages.earlyBirthday}
                     selectedMessage={selectedMessage}
-                    onSelect={setSelectedMessage}
+                    onSelect={handleSelectMessage}
                     keyArray='earlyBirthday'
                     handleAddMessage={handleAddMessage}
                 />
@@ -44,23 +74,83 @@ export default function MessagePage() {
                     listName='Atrasado'
                     list={messages.lateBirthday}
                     selectedMessage={selectedMessage}
-                    onSelect={setSelectedMessage}
+                    onSelect={handleSelectMessage}
                     keyArray='lateBirthday'
                     handleAddMessage={handleAddMessage}
                 />
-
             </div>
+
             <div className='right'>
-                {selectedMessage ? (
-                    <div className="selected-message">
+                <div className="selected-message-box">
+                    <div className="border-message-box">
                         <h2>Mensagem Selecionada</h2>
-                        <p>{selectedMessage}</p>
                     </div>
-                ) : (
-                    <p>Nenhuma mensagem selecionada.</p>
-                )}
-            </div>
+                    <div className="body-message-box">
+                        <textarea
+                            disabled={!selectedMessage}
+                            value={editedText}
+                            onChange={(e) => setEditedText(e.target.value)}
+                        />
+                    </div>
+                    <div className="border-message-box footer">
+                        <button
+                            onClick={handleSave}
+                            disabled={!selectedMessage}
+                            style={{
+                                backgroundColor: selectedMessage ? '#28a745' : '#3a3939',
+                                color: 'white',
+                                padding: '0.5rem 1rem',
+                                border: 'none',
+                                borderRadius: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                cursor: selectedMessage ? 'pointer' : 'not-allowed',
+                                transition: 'background-color 0.2s'
+                            }}
+                            onMouseOver={(e) => {
+                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#218838';
+                            }}
+                            onMouseOut={(e) => {
+                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#28a745';
+                            }}
+                        >
+                            <Check size={18} />
+                            Salvar
+                        </button>
 
+                        <button
+                            onClick={() => { setOpenDel(true) }}
+                            disabled={!selectedMessage}
+                            style={{
+                                backgroundColor: selectedMessage ? '#dc3545' : '#3a3939',
+                                color: 'white',
+                                padding: '0.5rem 1rem',
+                                border: 'none',
+                                borderRadius: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                cursor: selectedMessage ? 'pointer' : 'not-allowed',
+                                transition: 'background-color 0.2s',
+                                marginLeft: '1rem'
+                            }}
+                            onMouseOver={(e) => {
+                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#c82333';
+                            }}
+                            onMouseOut={(e) => {
+                                if (selectedMessage) e.currentTarget.style.backgroundColor = '#dc3545';
+                            }}
+                        >
+                            <Trash2 size={18} />
+                            Excluir
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+            <ConfirmDeleteModal onClose={() => { setOpenDel(false) }} isOpen={openDel} onDelete={handleDelete} />
         </div>
     );
 }

@@ -2,6 +2,7 @@ import { app } from 'electron';
 import { sendLog } from "./sendLog.js";
 import fs from 'fs';
 import path from "path";
+import { v4 as uuidv4 } from 'uuid';
 
 const defaultConfig = {
     whatsapp: {
@@ -148,7 +149,14 @@ export function addMessage(mainWindow, type, newMessage = 'Clique aqui para edit
             sendLog(mainWindow, `❌ Tipo de mensagem '${type}' não encontrado.`);
             return;
         }
-        config.whatsapp.messages[type].push(newMessage);
+        const id = uuidv4();
+        config.whatsapp.messages[type].push(
+            {
+                'text': newMessage,
+                'id': id
+            }
+
+        );
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2), "utf-8");
         sendLog(mainWindow, "✅ Nova mensagem adicionada com sucesso!");
     } catch (err) {
@@ -156,7 +164,7 @@ export function addMessage(mainWindow, type, newMessage = 'Clique aqui para edit
     }
 }
 
-export function deleteMessage(mainWindow, type, index) {
+export function deleteMessage(mainWindow, type, id) {
     const configPath = path.join(app.getPath("userData"), "config.json");
 
     try {
@@ -174,14 +182,18 @@ export function deleteMessage(mainWindow, type, index) {
             return;
         }
 
-        if (index < 0 || index >= messages.length) {
-            sendLog(mainWindow, `❌ Índice inválido para o tipo '${type}'.`);
+        const index = messages.findIndex(msg => msg.id === id);
+
+        if (index === -1) {
+            sendLog(mainWindow, `❌ Mensagem com ID '${id}' não encontrada no tipo '${type}'.`);
             return;
         }
-        const removed = messages.splice(index, 1);
+
+        const [removed] = messages.splice(index, 1);
+
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2), "utf-8");
 
-        sendLog(mainWindow, `✅ Mensagem removida com sucesso: "${removed[0].slice(0, 30)}..."`);
+        sendLog(mainWindow, `✅ Mensagem removida com sucesso: "${removed.text?.slice(0, 30) || 'Texto não encontrado'}..."`);
     } catch (err) {
         sendLog(mainWindow, `❌ Erro ao deletar mensagem: ${err.message}`);
     }

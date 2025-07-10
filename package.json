@@ -37,6 +37,7 @@
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
     "react-vertical-timeline-component": "^3.5.3",
+    "uuid": "^11.1.0",
     "whatsapp-web.js": "^1.30.0"
   },
   "devDependencies": {

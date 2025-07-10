@@ -165,3 +165,45 @@
 .help-content {
     padding: 1rem;
 }
+
+.selected-message-box {
+    background-color: #f6f6f6;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.border-message-box {
+    width: 100%;
+    background-color: #1d424b;
+    padding: .5rem;
+}
+
+.border-message-box.footer {
+    display: flex;
+    gap: 10px;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+.body-message-box {
+    height: 100%;
+}
+
+.body-message-box textarea {
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border: none;
+    padding: 1rem;
+    background-color: transparent;
+}
+
+.body-message-box textarea:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
