@@ -59,7 +59,7 @@ export default function CredencialPage() {
                     <p>Arraste o arquivo <code>credenciais.json</code> aqui ou clique para selecionar.</p>
 
                     <form>
-                        <Dropzone onFileRead={setJsonData} resetTrigger={resetKey} />
+                        <Dropzone onFileRead={setJsonData} resetTrigger={resetKey} accept={{ 'application/json': ['.json'] }} />
                         <Button message="Enviar Arquivo" onClick={(e) => {
                             e.preventDefault();
                             setOpen(true);

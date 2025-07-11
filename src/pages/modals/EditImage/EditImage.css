@@ -1,0 +1,36 @@
+.modal-edit-image {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #193941;
+}
+
+.modal-edit-image .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-edit-image .modal-close-button{
+    color: #f6f6f6be;
+}
+.modal-edit-image .modal-close-button:hover{
+    color: #f6f6f6;
+}
+
+
+.modal-edit-image .left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+}
+
+.preview-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

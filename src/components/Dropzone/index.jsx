@@ -9,7 +9,7 @@ const truncateFileName = (name, maxLength = 30) => {
     return `${base}...${ext}`;
 };
 
-const Dropzone = ({ onFileRead, resetTrigger }) => {
+export default function Dropzone({ onFileRead, resetTrigger, accept }) {
     const [fileName, setFileName] = useState(null);
     const inputRef = useRef();
 
@@ -35,23 +35,35 @@ const Dropzone = ({ onFileRead, resetTrigger }) => {
         setFileName(file.name);
 
         const reader = new FileReader();
+
         reader.onload = () => {
-            try {
-                const json = JSON.parse(reader.result);
-                console.log('Arquivo lido com sucesso:', json);
-                onFileRead(json);
-            } catch (error) {
-                console.error('Erro ao ler o JSON:', error);
-                onFileRead(null);
+            if (file.type.startsWith("image/")) {
+                // Retorna imagem base64
+                onFileRead(reader.result);
+            } else {
+                try {
+                    const json = JSON.parse(reader.result);
+                    console.log('Arquivo JSON lido com sucesso:', json);
+                    onFileRead(json);
+                } catch (error) {
+                    console.error('Erro ao ler o JSON:', error);
+                    onFileRead(null);
+                }
             }
         };
 
-        reader.readAsText(file);
+        // CHAMA SOMENTE UMA das duas opções:
+        if (file.type.startsWith("image/")) {
+            reader.readAsDataURL(file); // imagem em base64
+        } else {
+            reader.readAsText(file); // texto para JSON
+        }
     }, [onFileRead]);
+
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: { 'application/json': ['.json'] },
+        accept,
         multiple: false
     });
 
@@ -66,5 +78,3 @@ const Dropzone = ({ onFileRead, resetTrigger }) => {
         </div>
     );
 };
-
-export default Dropzone;

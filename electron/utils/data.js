@@ -213,3 +213,72 @@ export async function getAllMessages() {
         sendLog(mainWindow, `❌ Erro ao ler mensagens: ${err.message}`);
     }
 }
+
+
+export function getImageFromConfig() {
+    const userDataPath = app.getPath('userData');
+    const configPath = path.join(userDataPath, 'config.json');
+
+    try {
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        const imageName = config?.whatsapp?.mediaPath;
+
+        if (!imageName) {
+            console.error('mediaPath não encontrado no config.json');
+            return null;
+        }
+
+        const imagePath = path.join(userDataPath, imageName);
+
+        if (!fs.existsSync(imagePath)) {
+            console.error(`Imagem não encontrada: ${imagePath}`);
+            return null;
+        }
+
+        const imageBuffer = fs.readFileSync(imagePath);
+        const ext = path.extname(imageName).slice(1); // "jpg", "png", etc.
+        const base64 = imageBuffer.toString('base64');
+        const dataUrl = `data:image/${ext};base64,${base64}`;
+
+        return dataUrl;
+    } catch (err) {
+        console.error('Erro ao ler config ou imagem:', err);
+        return null;
+    }
+}
+
+export function updateImageFromBase64(mainWindow, base64Data, newFileName) {
+    const userDataPath = app.getPath('userData');
+    const configPath = path.join(userDataPath, 'config.json');
+
+    try {
+        // Ler o config.json atual
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        const oldImageName = config?.whatsapp?.mediaPath;
+
+        // Apagar a imagem anterior, se existir
+        if (oldImageName) {
+            const oldImagePath = path.join(userDataPath, oldImageName);
+            if (fs.existsSync(oldImagePath)) {
+                fs.unlinkSync(oldImagePath);
+            }
+        }
+
+        // Remover prefixo "data:image/png;base64,"
+        const base64Regex = /^data:image\/\w+;base64,/;
+        const buffer = Buffer.from(base64Data.replace(base64Regex, ''), 'base64');
+
+        // Salvar nova imagem
+        const newImagePath = path.join(userDataPath, newFileName);
+        fs.writeFileSync(newImagePath, buffer);
+
+        // Atualizar config.json
+        config.whatsapp.mediaPath = newFileName;
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+        sendLog(mainWindow, `✅ Imagem atualizada com sucesso!`);
+        return true;
+    } catch (err) {
+        sendLog(mainWindow, '❌ Erro ao atualizar imagem:', err);
+        return false;
+    }
+}

@@ -1,6 +1,7 @@
-import Button from '@/components/Button'
-import { ModalBase } from '@/components/Modal'
-import '@/pages/modals/Confirm/Confirm.css'
+import Button from '@/components/Button';
+import { ModalBase } from '@/components/Modal';
+import '@/pages/modals/Confirm/Confirm.css';
+
 export default function ConfirmModal({ onClickFunction, onClose, isOpen }) {
     return (
         <ModalBase isOpen={isOpen} onClose={onClose} className='modal-confirm'>

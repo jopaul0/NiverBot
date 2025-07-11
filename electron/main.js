@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 import { connectWhatsapp, disconnectWhatsapp, clearWhatsappSession, birthdayMessage, cancelWhatsappConnection } from './services/whatsapp.js';
 import { findBirthdays, getBirthdayToday, getBirthdays, findBirthdaysToday } from './services/googlesheets.js';
 import { sendLog } from './utils/sendLog.js';
-import { dataDirectoryExists, updateSpreadsheetId, readJsonFile, getAllMessages, addMessage, deleteMessage, updateMessage } from './utils/data.js';
+import { dataDirectoryExists, updateSpreadsheetId, readJsonFile, getAllMessages, addMessage, deleteMessage, updateMessage, getImageFromConfig, updateImageFromBase64 } from './utils/data.js';
 
 let mainWindow = null;
 
@@ -154,6 +154,17 @@ app.whenReady().then(() => {
         updateMessage(mainWindow, type, id, text);
     });
 
+    ipcMain.handle('get-media-image', (event) => {
+        return getImageFromConfig();
+    });
+
+    ipcMain.handle('update-media-image', async (_event, base64Image) => {
+        const extMatch = base64Image.match(/^data:image\/(\w+);base64,/);
+        const ext = extMatch ? extMatch[1] : 'png';
+        const fileName = `media_${Date.now()}.${ext}`;
+        const result = updateImageFromBase64(mainWindow, base64Image, fileName);
+        return result;
+    });
 });
 
 app.on('window-all-closed', () => {

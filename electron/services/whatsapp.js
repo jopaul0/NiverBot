@@ -107,7 +107,28 @@ export async function birthdayMessage(mainWindow, birthdays) {
     }
 
     sendLog(mainWindow, `Enviando mensagens de aniversário para ${birthdays.length} contatos...`);
-    const mediaPath = path.join(app.getPath('userData'), 'birthday.jpeg'); // ✅ caminho seguro
+
+    const userDataPath = app.getPath('userData');
+    const configPath = path.join(userDataPath, 'config.json');
+    let mediaFileName = 'birthday.jpeg'; // fallback padrão
+
+    try {
+        const configRaw = fs.readFileSync(configPath, 'utf-8');
+        const config = JSON.parse(configRaw);
+        if (config?.whatsapp?.mediaPath) {
+            mediaFileName = config.whatsapp.mediaPath;
+        }
+    } catch (err) {
+        sendLog(mainWindow, `❌ Erro ao ler config.json para obter a imagem: ${err.message}`);
+    }
+
+    const mediaPath = path.join(userDataPath, mediaFileName);
+
+    if (!fs.existsSync(mediaPath)) {
+        sendLog(mainWindow, `❌ Imagem não encontrada no caminho: ${mediaPath}`);
+        return;
+    }
+
     const media = MessageMedia.fromFilePath(mediaPath);
 
     for (const birthday of birthdays) {

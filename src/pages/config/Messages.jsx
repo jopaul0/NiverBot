@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import List from '@/components/List';
 import { Check, Trash2, Image } from 'lucide-react';
 import { ConfirmDeleteModal, ConfirmEditModal } from '@/pages/modals/Confirm';
+import EditImageModal from '../modals/EditImage';
 
 export default function MessagePage() {
     const [messages, setMessages] = useState({});
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [openDel, setOpenDel] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [openEditImage, setOpenEditImage] = useState(false);
     const [editedText, setEditedText] = useState('');
+
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -147,7 +150,7 @@ export default function MessagePage() {
                             </button>
                         </div>
                         <button
-                            onClick={() => { /* sua função aqui */ }}
+                            onClick={() => { setOpenEditImage(true) }}
                             style={{
                                 backgroundColor: '#007bff', // azul como cor padrão para botão de mídia
                                 color: 'white',
@@ -178,6 +181,7 @@ export default function MessagePage() {
             </div>
             <ConfirmDeleteModal onClose={() => { setOpenDel(false) }} isOpen={openDel} onDelete={handleDelete} />
             <ConfirmEditModal onClose={() => { setOpenEdit(false) }} isOpen={openEdit} onEdit={handleSave} />
+            <EditImageModal onClose={() => { setOpenEditImage(false) }} isOpen={openEditImage} />
         </div>
     );
 }
